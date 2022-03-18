@@ -180,7 +180,6 @@ export default {
       font-size: 1.2rem;
       margin-bottom: 1rem;
     }
-
     button {
       width: 100%;
       background-color: $color-primary;
