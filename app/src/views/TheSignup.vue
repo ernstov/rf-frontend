@@ -1,22 +1,116 @@
 <template>
   <div class="signup flex justify-center items-center">
-    <form action="">
-      <h1>Sing Up</h1>
+    <form @submit.prevent="submitForm()">
+      <h1>Sign Up</h1>
       <p class="para">Create your account easy with less information</p>
-      <input type="text" name="name" placeholder="Full Name" />
-      <input type="text" name="email" placeholder="Email" />
-      <input type="password" name="password" placeholder="Password" />
+      <input
+        type="text"
+        name="name"
+        placeholder="Username"
+        v-model="username"
+        :class="{ 'input-error': isUsernameValid }"
+      />
+      <p v-if="isUsernameValid" class="validation-error">
+        {{ userNameMessage }}
+      </p>
+      <input
+        type="email"
+        name="email"
+        placeholder="Email"
+        v-model="email"
+        :class="{ 'input-error': isEmailValid }"
+      />
+      <p v-if="emailMessage" class="validation-error">
+        {{ emailMessage }}
+      </p>
+
+      <input
+        type="password"
+        name="password"
+        placeholder="Password"
+        v-model="password"
+        :class="{ 'input-error': isPasswordValid }"
+      />
+      <p v-if="isPasswordValid" class="validation-error">
+        {{ passwordMessage }}
+      </p>
+
       <input
         type="password"
         name="confirm-password"
         placeholder="Confirm Password"
+        v-model="confirm_password"
+        :class="{ 'input-error': isConfirmPasswordValid }"
       />
+      <p v-if="isConfirmPasswordValid" class="validation-error">
+        {{ confirmPasswordMessage }}
+      </p>
 
-      <button>Create Account</button>
+      <button type="submit">Create Account</button>
     </form>
   </div>
 </template>
 
+<script>
+export default {
+  data() {
+    return {
+      username: null,
+      email: null,
+      password: null,
+      confirm_password: null,
+      error: null,
+
+      //validation data property
+      isUsernameValid: false,
+      isEmailValid: false,
+      isPasswordValid: false,
+      isConfirmPasswordValid: false,
+
+      userNameMessage: null,
+      emailMessage: null,
+      passwordMessage: null,
+      confirmPasswordMessage: null,
+    };
+  },
+  methods: {
+    async submitForm() {
+      try {
+        const payloadData = {
+          email: this.email,
+          username: this.username,
+          password: this.password,
+          confirm_password: this.confirm_password,
+        };
+        await this.$store.dispatch("authModule/signup", payloadData).then(() => {
+          this.$router.replace("/login");
+        });
+      } catch (error) {
+        if (error.response.status === 400) {
+          for (const key in error.response.data) {
+            if (key === "email") {
+              this.isEmailValid = true;
+              this.emailMessage = error.response.data[key][0];
+            }
+            if (key === "username") {
+              this.isUsernameValid = true;
+              this.userNameMessage = error.response.data[key][0];
+            }
+            if (key === "password") {
+              this.isPasswordValid = true;
+              this.passwordMessage = error.response.data[key][0];
+            }
+            if (key === "confirm_password") {
+              this.isConfirmPasswordValid = true;
+              this.confirmPasswordMessage = error.response.data[key][0];
+            }
+          }
+        }
+      }
+    },
+  },
+};
+</script>
 <style lang="scss" scoped>
 .signup {
   padding: 7rem 0;
@@ -47,7 +141,7 @@
     }
     input {
       width: 100%;
-      margin-bottom: 2rem;
+      margin-bottom: 0.5rem;
       height: 4rem;
       padding: 1.5rem 0;
       font-size: 1.5rem;
@@ -57,6 +151,14 @@
     }
     input::placeholder {
       opacity: 0.7;
+    }
+    .input-error {
+      border-bottom: 2px solid red;
+    }
+    .validation-error {
+      color: red;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
     }
     button {
       width: 100%;
