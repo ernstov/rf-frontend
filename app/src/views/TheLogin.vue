@@ -1,15 +1,64 @@
 <template>
   <div class="login flex justify-center items-center">
-    <form action="">
+    <form @submit.prevent="login()">
       <h1>Login</h1>
-      <input type="text" placeholder="User name" />
-      <input type="text" placeholder="Password" />
+      <input type="email" placeholder="Email" v-model="email" required />
+      <input
+        type="password"
+        placeholder="Password"
+        v-model="password"
+        required
+      />
       <button>Login</button>
-      <p>Don’t have account ? <a href="/">Sign up</a></p>
+      <p>
+        Don’t have account ? <router-link to="/register">Sign up</router-link>
+      </p>
     </form>
   </div>
 </template>
+<script>
+export default {
+  data() {
+    return {
+      email: null,
+      password: null,
 
+      // validation data property
+
+      isEmailValid: false,
+      isPasswordValid: false,
+
+      emailMessage: null,
+      passwordMessage: null,
+    };
+  },
+  methods: {
+    async login() {
+      try {
+        const payloadData = {
+          email: this.email,
+          password: this.password,
+        };
+        await this.$store
+          .dispatch("authModule/login", payloadData)
+          .then(() => {
+            this.$router.push('program-dashboard')
+          });
+      } catch (error) {
+        if (error.response.status === 401) {
+          for (const key in error.response.data) {
+            console.log(Object.hasOwnProperty.call(error.response.data, key));
+            // if (Object.hasOwnProperty.call(error.response.data, key)) {
+            //   const element = object[key];
+
+            // }
+          }
+        }
+      }
+    },
+  },
+};
+</script>
 <style lang="scss" scoped>
 .login {
   padding: 7rem 0;

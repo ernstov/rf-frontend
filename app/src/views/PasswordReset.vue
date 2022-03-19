@@ -9,6 +9,14 @@
   </div>
 </template>
 
+<script>
+export default {
+  data(){
+    
+  }
+}
+</script>
+
 <style lang="scss" scoped>
 .reset-password {
   padding: 7rem 0;

@@ -1,12 +1,33 @@
 <template>
   <div class="forgot-password flex justify-center items-center">
-    <form action="">
+    <form @submit.prevent="forgotPassword">
       <h1>Forgot Password</h1>
-      <input type="text" name="email" placeholder="Email" />
+      <input type="text" name="email" placeholder="Email" v-model="email" />
       <button>Forgot Password</button>
     </form>
   </div>
 </template>
+
+<script>
+export default {
+  data() {
+    return {
+      email: null,
+    };
+  },
+  methods: {
+    forgotPassword() {
+      try {
+        this.$store.dispatch("authModule/resetPassword", { email: this.email });
+      } catch (error) {
+        if (error.response.status === 200) {
+          this.$touter.push("/reset-password");
+        }
+      }
+    },
+  },
+};
+</script>
 
 <style lang="scss" scoped>
 .forgot-password {
