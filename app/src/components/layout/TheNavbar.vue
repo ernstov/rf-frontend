@@ -1,10 +1,20 @@
 <template>
-  <!-- This example requires Tailwind CSS v2.0+ -->
   <nav class="bg-gray-800">
-    <div class="w-4/5 mx-auto px-2 sm:px-8 lg:px-10 h-24 flex items-center justify-between">
+    <div
+      class="
+        w-4/5
+        mx-auto
+        px-2
+        sm:px-8
+        lg:px-10
+        h-24
+        flex
+        items-center
+        justify-between
+      "
+    >
       <div class="relative flex items-center justify-between h-16 w-full">
         <div class="absolute inset-y-0 left-0 flex items-center sm:hidden">
-          <!-- Mobile menu button-->
           <button
             type="button"
             class="
@@ -21,13 +31,7 @@
             aria-expanded="false"
           >
             <span class="sr-only">Open main menu</span>
-            <!--
-            Icon when menu is closed.
 
-            Heroicon name: outline/menu
-
-            Menu open: "hidden", Menu closed: "block"
-          -->
             <svg
               class="block h-6 w-6"
               xmlns="http://www.w3.org/2000/svg"
@@ -43,13 +47,7 @@
                 d="M4 6h16M4 12h16M4 18h16"
               />
             </svg>
-            <!--
-            Icon when menu is open.
 
-            Heroicon name: outline/x
-
-            Menu open: "block", Menu closed: "hidden"
-          -->
             <svg
               class="hidden h-6 w-6"
               xmlns="http://www.w3.org/2000/svg"
@@ -84,7 +82,6 @@
           </div>
           <div class="hidden sm:block sm:ml-6">
             <div class="flex space-x-4">
-              <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
               <a
                 href="#"
                 class="
@@ -129,7 +126,6 @@
             "
           >
             <span class="sr-only">View notifications</span>
-            <!-- Heroicon name: outline/bell -->
             <svg
               class="h-10 w-10"
               xmlns="http://www.w3.org/2000/svg"
@@ -169,6 +165,7 @@
               >
                 <span class="sr-only">Open user menu</span>
                 <img
+                  @click="showOptions = !showOptions"
                   class="h-12 w-12 rounded-full"
                   src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80"
                   alt=""
@@ -176,17 +173,8 @@
               </button>
             </div>
 
-            <!--
-            Dropdown menu, show/hide based on menu state.
-
-            Entering: "transition ease-out duration-100"
-              From: "transform opacity-0 scale-95"
-              To: "transform opacity-100 scale-100"
-            Leaving: "transition ease-in duration-75"
-              From: "transform opacity-100 scale-100"
-              To: "transform opacity-0 scale-95"
-          -->
             <div
+              v-if="showOptions"
               class="
                 origin-top-right
                 absolute
@@ -199,48 +187,48 @@
                 bg-white
                 ring-1 ring-black ring-opacity-5
                 focus:outline-none
+                outline-none
               "
               role="menu"
               aria-orientation="vertical"
               aria-labelledby="user-menu-button"
               tabindex="-1"
             >
-              <!-- Active: "bg-gray-100", Not Active: "" -->
-              <a
-                href="#"
-                class="block px-4 py-2 text-2xl text-gray-700"
-                role="menuitem"
-                tabindex="-1"
-                id="user-menu-item-0"
-                >Your Profile</a
-              >
-              <a
-                href="#"
-                class="block px-4 py-2 text-2xl text-gray-700"
-                role="menuitem"
-                tabindex="-1"
-                id="user-menu-item-1"
-                >Settings</a
-              >
-              <a
-                class="block px-4 py-2 text-2xl text-gray-700"
-                role="menuitem"
-                tabindex="-1"
-                id="user-menu-item-2"
-                @click="logout"
-              >
-                Sign out</a
-              >
+              <ul>
+                <li
+                  class="block px-4 py-2 text-2xl text-gray-700 cursor-pointer"
+                  role="menuitem"
+                  tabindex="-1"
+                  id="user-menu-item-0"
+                >
+                  Your Profile
+                </li>
+                <li
+                  class="block px-4 py-2 text-2xl text-gray-700 cursor-pointer"
+                  role="menuitem"
+                  tabindex="-1"
+                  id="user-menu-item-1"
+                >
+                  Settings
+                </li>
+                <li
+                  class="block px-4 py-2 text-2xl text-gray-700 cursor-pointer"
+                  role="menuitem"
+                  tabindex="-1"
+                  id="user-menu-item-2"
+                  @click="logout"
+                >
+                  Sign out
+                </li>
+              </ul>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Mobile menu, show/hide based on menu state. -->
     <div class="sm:hidden" id="mobile-menu">
       <div class="px-2 pt-2 pb-3 space-y-1">
-        <!-- Current: "bg-gray-900 text-white", Default: "text-gray-300 hover:bg-gray-700 hover:text-white" -->
         <a
           href="#"
           class="
@@ -262,8 +250,12 @@
 </template>
 
 <script>
-
 export default {
+  data() {
+    return {
+      showOptions: false,
+    };
+  },
   methods: {
     logout() {
       try {
@@ -277,7 +269,5 @@ export default {
 };
 </script>
 
-<script>
-</script>
 <style lang="scss" scoped>
 </style>
