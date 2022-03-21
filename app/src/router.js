@@ -3,7 +3,9 @@ import TheLogin from "@/views/TheLogin.vue";
 import TheSignup from "@/views/TheSignup.vue";
 import PasswordReset from "@/views/PasswordReset.vue";
 import PasswordForgot from "@/views/PasswordForgot.vue";
+import AssetExplorer from "@/views/AssetExplorer.vue";
 import TheProgram from "@/components/TheProgram.vue";
+import AddNewAssets from "@/components/AddNewAssets.vue";
 import store from "@/store/index.js";
 
 const router = createRouter({
@@ -49,6 +51,22 @@ const router = createRouter({
         requiresAuth: true,
       },
     },
+    {
+      path: "/assets-explorer",
+      component: AssetExplorer,
+      name: "Assets-explorer",
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: "/assets-explorer/new",
+      component: AddNewAssets,
+      name: "Add-new-assets",
+      meta: {
+        requiresAuth: true,
+      },
+    },
   ],
 });
 
@@ -73,7 +91,7 @@ router.beforeEach((to, from, next) => {
     } else {
       next();
     }
-  } 
+  }
 });
 
 export default router;
