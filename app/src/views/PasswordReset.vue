@@ -1,27 +1,65 @@
 <template>
   <div class="reset-password h-[100vh] flex justify-center items-center">
-    <form action="">
+    <div>
       <h1>Reset Password</h1>
-      <input type="text" placeholder="Password" />
-      <input type="password" name="password" placeholder="Confirm Password" />
-      <button>Reset Password</button>
-    </form>
+      <input type="text" placeholder="Password" v-model="newPassword" />
+      <input
+        type="password"
+        name="password"
+        placeholder="Confirm Password"
+        v-model="confirmPassword"
+      />
+      <button @click="resetPassword">Reset Password</button>
+    </div>
   </div>
 </template>
 
 <script>
+import ApiService from "@/services/api.service.js";
+
 export default {
-  data(){
-    
-  }
-}
+  data() {
+    return {
+      newPassword: null,
+      confirmPassword: null,
+    };
+  },
+  methods: {
+    resetPassword() {
+      try {
+        const uid = this.$route.query["uid"];
+        const token = this.$route.query["token"];
+
+        if (this.newPassword === this.confirmPassword) {
+          const requestObject = {
+            uid: uid,
+            token: token,
+            new_password: this.newPassword,
+          };
+
+          ApiService.post("auth/users/reset_password_confirm/", requestObject)
+            .then((response) => {
+              if (response.status === 201) {
+                this.$route.push({ path: "/login" });
+              }
+            })
+            .catch((error) => {
+              return error;
+            });
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 .reset-password {
   padding: 7rem 0;
   height: 100vh;
-  form {
+  div {
     width: 40rem;
     background-color: $color-white;
     padding: 3rem;
