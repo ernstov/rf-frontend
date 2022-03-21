@@ -1,7 +1,7 @@
 <template>
-  <div class="relative inline-block text-left w-80 mr-12">
+  <div class="relative inline-block text-left w-8/12 mr-12">
     <div>
-      <p class="text-gray-700 block text-2xl mb-5">Select by workflow type</p>
+      <p class="block text-3xl mb-5">Select by workflow type</p>
       <select
         type="button"
         @click="showOptions = !showOptions"
@@ -19,18 +19,15 @@
           hover:bg-gray-50
           outline-none
           focus:outline-none
-          focus:ring-2
-          focus:ring-offset-2
-          focus:ring-offset-gray-100
-          focus:ring-indigo-500
           text-2xl
           rounded-t-1xl
+          h-16
         "
         id="menu-button"
         aria-expanded="true"
         aria-haspopup="true"
       >
-        <img src="@/assets/images/arrow_drop.svg" alt="Down Arrow" />
+        <!-- <img src="@/assets/images/arrow_drop.svg" alt="Down Arrow" /> -->
 
         <option value="" class="text-2xl">---Choose ---</option>
         <option

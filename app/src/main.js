@@ -8,8 +8,6 @@ import gAuthPlugin from 'vue3-google-oauth2';
 
 const app = createApp(App);
 const gauthClientId = process.env.VUE_APP_GOOGLE_CLIENT_ID
-console.log(gauthClientId);
-console.log(process.env.VUE_APP_ROOT_API);
 
 //Set the base URL of the API
 

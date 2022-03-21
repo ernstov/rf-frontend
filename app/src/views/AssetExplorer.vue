@@ -1,7 +1,7 @@
 <template>
   <div>
     <the-navbar></the-navbar>
-    <div class="px-60 py-32">
+    <div class="px-60 py-32 h-screen">
       <div class="flex">
         <base-dropdown></base-dropdown>
         <base-dropdown></base-dropdown>
@@ -219,6 +219,7 @@
                           bg-gray-300
                           p-3
                         "
+                        onclick="toggleModal()"
                         >Edit</a
                       >
                     </td>
@@ -791,18 +792,25 @@
         >
       </div>
     </div>
+    <!-- <bulk-upload-modal></bulk-upload-modal> -->
+    <edit-asset-modal></edit-asset-modal>
   </div>
 </template>
 <script>
 import TheNavbar from "@/components/layout/TheNavbar.vue";
 import BaseDropdown from "@/components/BaseComponents/BaseDropdown.vue";
+// import BulkUploadModal from "@/components/Modals/BulkUploadModal.vue";
+import EditAssetModal from "@/components/Modals/EditAssetModal.vue";
 
 export default {
   components: {
     TheNavbar,
     BaseDropdown,
+    // BulkUploadModal,
+    EditAssetModal,
   },
 };
+
 </script>
 <style lang="scss" scoped>
 .link {

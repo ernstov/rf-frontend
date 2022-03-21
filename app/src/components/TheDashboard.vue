@@ -39,14 +39,17 @@
         </svg>
       </button>
     </div>
+    <add-new-program-modal></add-new-program-modal>
   </div>
 </template>
 <script>
 import BaseCard from "@/components/BaseComponents/BaseCard.vue";
+import AddNewProgramModal from "@/components/Modals/AddNewProgramModal.vue";
 
 export default {
   components: {
     BaseCard,
+    AddNewProgramModal,
   },
 };
 </script>

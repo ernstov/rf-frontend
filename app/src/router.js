@@ -4,6 +4,7 @@ import TheSignup from "@/views/TheSignup.vue";
 import PasswordReset from "@/views/PasswordReset.vue";
 import PasswordForgot from "@/views/PasswordForgot.vue";
 import AssetExplorer from "@/views/AssetExplorer.vue";
+import AssetView from "@/views/AssetView.vue";
 import TheProgram from "@/components/TheProgram.vue";
 import AddNewAssets from "@/components/AddNewAssets.vue";
 import store from "@/store/index.js";
@@ -63,6 +64,14 @@ const router = createRouter({
       path: "/assets-explorer/new",
       component: AddNewAssets,
       name: "Add-new-assets",
+      meta: {
+        requiresAuth: true,
+      },
+    },
+    {
+      path: "/assets-view",
+      component: AssetView,
+      name: "Asset-view",
       meta: {
         requiresAuth: true,
       },
