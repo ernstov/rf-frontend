@@ -15,6 +15,7 @@
       <p>
         Don’t have account ? <router-link to="/register">Sign up</router-link>
       </p>
+      <button class="forgot-btn" @click.prevent="forgotPassword">Forgot Password</button>
     </form>
   </div>
 </template>
@@ -49,12 +50,37 @@ export default {
           email: this.email,
           password: this.password,
         };
-        await this.$store.dispatch("authModule/login", payloadData)
-        this.$router.push("program-dashboard");
-      } catch (error) {
-        console.log(error.response.data);
+        await this.$store
+          .dispatch("authModule/login", payloadData)
+          .then((response) => {
+            // console.log(response);
+            if(response.status === 200){
+              this.$router.push('program-dashboard');
+            }
+          })
+          .catch((error) => {
+              console.log("Catch");
+              console.log(error);
+              if (error.response.status === 401) {
+                console.log('401');
+                this.errorMessage = error.response.data;
+                console.log(this.errorMessage);
+                console.log(error.response.data);
+                for (const key in error.response.data) {
+                  console.log(key);
+                }
+              }
+          })
+      }
+      catch (error) {
+        console.log("Try Catch");
+        return error;
+        
       }
     },
+    forgotPassword(){
+      this.$router.push('/forgot-password');
+    }
   },
 };
 </script>
@@ -62,6 +88,7 @@ export default {
 .login {
   padding: 7rem 0;
   height: 100vh;
+  text-align: center;
 
   form {
     width: 40rem;
@@ -93,7 +120,7 @@ export default {
     input::placeholder {
       opacity: 0.7;
     }
-    button {
+    .login-btn {
       width: 100%;
       background-color: $color-primary;
       color: $color-white;
@@ -113,6 +140,9 @@ export default {
         color: $color-primary;
         font-weight: bold;
       }
+    }
+    .forgot-btn{
+      font-size: 1.4rem;
     }
   }
 }

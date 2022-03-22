@@ -2,7 +2,7 @@ import ApiService from "@/services/api.service.js";
 import StorageService from "@/services/storage.service.js";
 
 export default {
-  async signup(payload) {
+  async signup(_,payload) {
     const requestObject = {
       email: payload.email,
       username: payload.username,
@@ -25,7 +25,10 @@ export default {
         return response;
       })
       .catch(function (error) {
-        throw error;
+        if(error.response.status === 401){
+          console.log("401");
+        }
+        console.log(error);
       });
   },
   async googleLogin(context, payload) {
@@ -49,7 +52,7 @@ export default {
     StorageService.removeData("refresh");
     context.commit("logoutUser");
   },
-  async resetPassword(context, payload) {
+  async resetPassword(_, payload) {
     const requestObject = {
       email: payload.email,
     };

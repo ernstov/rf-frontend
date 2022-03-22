@@ -2,12 +2,14 @@
   <div class="reset-password h-[100vh] flex justify-center items-center">
     <div>
       <h1>Reset Password</h1>
-      <input type="text" placeholder="Password" v-model="newPassword" />
+      <p class="error">{{errorMessage}}</p>
+      <input type="password" placeholder="Password" v-model="newPassword" :class="{'input-error': errorMessage}"/>
       <input
         type="password"
         name="password"
         placeholder="Confirm Password"
         v-model="confirmPassword"
+        :class="{'input-error': errorMessage}"
       />
       <button @click="resetPassword">Reset Password</button>
     </div>
@@ -22,33 +24,49 @@ export default {
     return {
       newPassword: null,
       confirmPassword: null,
+      errorMessage: ''
     };
   },
   methods: {
     resetPassword() {
+      if(this.newPassword === this.confirmPassword){
       try {
         const uid = this.$route.query["uid"];
         const token = this.$route.query["token"];
+        console.log(token);
+        const requestObject = {
+          uid: uid,
+          token: token,
+          new_password: this.newPassword,
+        };
+        this.errorMessage = "";
+        ApiService.post("auth/users/reset_password_confirm/", requestObject)
+          .then((response) => {
+            console.log("Hello");
+            if (response.status === 204) {
+              this.$router.push({ path: "/login" });
+            }
+          })
+          .catch((error) => {
+            if (error.response.status === 400) {
+              for (const key in error.response.data) {
+                if (key === "new_password") {
+                    error.response.data[key].forEach((element) => {
+                    console.log(element);
+                    this.errorMessage = '';
+                    this.errorMessage += `${element} `;
+                  });
+                }
 
-        if (this.newPassword === this.confirmPassword) {
-          const requestObject = {
-            uid: uid,
-            token: token,
-            new_password: this.newPassword,
-          };
-
-          ApiService.post("auth/users/reset_password_confirm/", requestObject)
-            .then((response) => {
-              if (response.status === 201) {
-                this.$route.push({ path: "/login" });
               }
-            })
-            .catch((error) => {
-              return error;
-            });
-        }
+            }
+          });
       } catch (error) {
-        console.error(error);
+        console.log(error);
+      }
+      }
+      else{
+        this.errorMessage = "Passwords do not match";
       }
     },
   },
@@ -59,6 +77,10 @@ export default {
 .reset-password {
   padding: 7rem 0;
   height: 100vh;
+  .error{
+    color: red;
+    font-size: 1.2rem;
+  }
   div {
     width: 40rem;
     background-color: $color-white;
@@ -84,6 +106,9 @@ export default {
     }
     input::placeholder {
       opacity: 0.7;
+    }
+    .input-error{
+      border-bottom: 2px solid red;
     }
     button {
       width: 100%;

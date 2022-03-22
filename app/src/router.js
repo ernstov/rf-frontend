@@ -28,7 +28,7 @@ const router = createRouter({
       },
     },
     {
-      path: "/reset/password/confirm/",
+      path: "/password/reset/confirm/",
       component: PasswordReset,
       name: "Password-reset",
       meta: {

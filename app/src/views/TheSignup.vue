@@ -45,7 +45,7 @@
       <p v-if="isConfirmPasswordValid" class="validation-error">
         {{ confirmPasswordMessage }}
       </p>
-
+      <p v-if="errorMessage" class="error">{{errorMessage}}</p>
       <button type="submit">Create Account</button>
     </form>
   </div>
@@ -67,14 +67,19 @@ export default {
       isPasswordValid: false,
       isConfirmPasswordValid: false,
 
-      userNameMessage: null,
-      emailMessage: null,
-      passwordMessage: null,
-      confirmPasswordMessage: null,
+      userNameMessage: '',
+      emailMessage: '',
+      passwordMessage: '',
+      confirmPasswordMessage: '',
+      errorMessage: '',
     };
   },
   methods: {
     async submitForm() {
+      this.emailMessage = '';
+      this.passwordMessage = '';
+      this.userNameMessage = '';
+      this.confirmPasswordMessage = '';
       try {
         const payloadData = {
           email: this.email,
@@ -82,27 +87,45 @@ export default {
           password: this.password,
           confirm_password: this.confirm_password,
         };
-        await this.$store.dispatch("authModule/signup", payloadData).then(() => {
-          this.$router.replace("/login");
-        });
+        console.log(payloadData);
+        await this.$store
+          .dispatch("authModule/signup", payloadData)
+          .then((response) => {
+            if (response.status === 201) {
+              this.$router.replace("/login");
+            }
+          });
       } catch (error) {
         if (error.response.status === 400) {
           for (const key in error.response.data) {
             if (key === "email") {
               this.isEmailValid = true;
-              this.emailMessage = error.response.data[key][0];
+              error.response.data[key].forEach((element) => {
+                this.emailMessage += `${element} `;
+              });
             }
             if (key === "username") {
               this.isUsernameValid = true;
-              this.userNameMessage = error.response.data[key][0];
+              error.response.data[key].forEach((element) => {
+                this.userNameMessage += `${element} `;
+              });
             }
             if (key === "password") {
               this.isPasswordValid = true;
-              this.passwordMessage = error.response.data[key][0];
+              error.response.data[key].forEach((element) => {
+                this.passwordMessage += `${element} `;
+              });
             }
             if (key === "confirm_password") {
               this.isConfirmPasswordValid = true;
-              this.confirmPasswordMessage = error.response.data[key][0];
+              error.response.data[key].forEach((element) => {
+                this.confirmPasswordMessage += `${element} `;
+              });
+            }
+            if(key === 'non_field_errors'){
+               error.response.data[key].forEach((element) => {
+                this.errorMessage += `${element} `;
+              });
             }
           }
         }
@@ -115,11 +138,9 @@ export default {
 .signup {
   padding: 7rem 0;
   height: 100vh;
-
   form {
     width: 40rem;
     background-color: $color-white;
-    // box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
     padding: 3rem;
     padding-top: 6rem;
     border-radius: 1rem;
@@ -155,11 +176,12 @@ export default {
     .input-error {
       border-bottom: 2px solid red;
     }
-    .validation-error {
+    .validation-error, .error{
       color: red;
       font-size: 1.2rem;
       margin-bottom: 1rem;
     }
+    
     button {
       width: 100%;
       background-color: $color-primary;
