@@ -10,6 +10,7 @@
         required
       />
       <button>Login</button>
+      <google-sign-in></google-sign-in>
       <p>
         Don’t have account ? <router-link to="/register">Sign up</router-link>
       </p>
@@ -17,7 +18,13 @@
   </div>
 </template>
 <script>
+// import ApiService from "@/services/api.service.js"
+import GoogleSignIn from "@/components/GoogleSignIn.vue";
+
 export default {
+  components: {
+    GoogleSignIn,
+  },
   data() {
     return {
       email: null,
@@ -39,11 +46,9 @@ export default {
           email: this.email,
           password: this.password,
         };
-        await this.$store
-          .dispatch("authModule/login", payloadData)
-          .then(() => {
-            this.$router.push('program-dashboard')
-          });
+        await this.$store.dispatch("authModule/login", payloadData).then(() => {
+          this.$router.push("program-dashboard");
+        });
       } catch (error) {
         if (error.response.status === 401) {
           for (const key in error.response.data) {
