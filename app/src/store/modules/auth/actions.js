@@ -22,9 +22,10 @@ export default {
         StorageService.saveData("access", tokens.access);
         StorageService.saveData("refresh", tokens.refresh);
         context.commit("setUser", requestObject.email);
+        return response;
       })
       .catch(function (error) {
-        console.log(error);
+        throw error;
       });
   },
   logout(context) {
