@@ -14,31 +14,19 @@ export default {
         if (!googleUser) {
           return null;
         }
-        const token = googleUser.getAuthResponse();
-        console.log(token);
-        //     ApiService.post("/auth/google/").then((response) => {
-        //       console.log(response);
-        //     }).catch((error) => {
-        //         console.log(error);
-        //     })
+        const payloadData = {
+          token: googleUser.getAuthResponse(),
+          email: googleUser.getBasicProfile().getEmail(),
+        };
+        await this.$store
+          .dispatch("authModule/googleLogin", payloadData)
+          .then(() => {
+            this.$router.push("program-dashboard");
+          });
       } catch (error) {
         console.error(error);
         return null;
       }
-    },
-    onGoogleSignInSuccess(resp) {
-      const token = resp.Zi.access_token;
-      console.log(token);
-      // axios
-      //   .post("http://localhost:8000/api/v1/auth/google/", {
-      //     access_token: token,
-      //   })
-      //   .then((resp) => {
-      //     this.user = resp.data.user;
-      //   })
-      //   .catch((err) => {
-      //     console.log(err.response);
-      //   });
     },
   },
 };
