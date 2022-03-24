@@ -83,6 +83,7 @@
             Save
           </button>
           <button
+          @click="$emit('cancel')"
             type="button"
             class="
               w-30

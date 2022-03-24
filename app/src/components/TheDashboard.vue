@@ -13,6 +13,7 @@
     <base-card></base-card>
     <div class="h-60 rounded-2xl flex items-center justify-center">
       <button
+        @click="showAddNewProgramModal = true"
         class="
           bg-green-500
           hover:bg-green-700
@@ -39,7 +40,7 @@
         </svg>
       </button>
     </div>
-    <add-new-program-modal></add-new-program-modal>
+    <add-new-program-modal v-if="showAddNewProgramModal" @close-modal="showAddNewProgramModal=false"></add-new-program-modal>
   </div>
 </template>
 <script>
@@ -51,5 +52,10 @@ export default {
     BaseCard,
     AddNewProgramModal,
   },
+  data(){
+    return {
+      showAddNewProgramModal: false,
+    }
+  }
 };
 </script>

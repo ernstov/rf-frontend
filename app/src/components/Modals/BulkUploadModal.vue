@@ -115,6 +115,7 @@
               text-3xl
               ml-10
             "
+            @click="$emit('close-modal')"
           >
             Cancel
           </button>
