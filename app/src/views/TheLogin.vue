@@ -2,6 +2,7 @@
   <div class="login flex justify-center items-center">
     <form @submit.prevent="login()">
       <h1>Login</h1>
+        <p v-if="errorMessage" class="error">{{this.errorMessage}}</p>
       <input type="email" placeholder="Email" v-model="email" required />
       <input
         type="password"
@@ -10,6 +11,7 @@
         required
       />
       <button>Login</button>
+      <google-sign-in></google-sign-in>
       <p>
         Don’t have account ? <router-link to="/register">Sign up</router-link>
       </p>
@@ -17,7 +19,13 @@
   </div>
 </template>
 <script>
+// import ApiService from "@/services/api.service.js"
+import GoogleSignIn from "@/components/GoogleSignIn.vue";
+
 export default {
+  components: {
+    GoogleSignIn,
+  },
   data() {
     return {
       email: null,
@@ -30,6 +38,8 @@ export default {
 
       emailMessage: null,
       passwordMessage: null,
+
+      errorMessage: "",
     };
   },
   methods: {
@@ -39,21 +49,10 @@ export default {
           email: this.email,
           password: this.password,
         };
-        await this.$store
-          .dispatch("authModule/login", payloadData)
-          .then(() => {
-            this.$router.push('program-dashboard')
-          });
+        await this.$store.dispatch("authModule/login", payloadData)
+        this.$router.push("program-dashboard");
       } catch (error) {
-        if (error.response.status === 401) {
-          for (const key in error.response.data) {
-            console.log(Object.hasOwnProperty.call(error.response.data, key));
-            // if (Object.hasOwnProperty.call(error.response.data, key)) {
-            //   const element = object[key];
-
-            // }
-          }
-        }
+        console.log(error.response.data);
       }
     },
   },
@@ -76,6 +75,10 @@ export default {
       font-weight: bold;
       text-align: center;
       margin-bottom: 6rem;
+    }
+    .error{
+      color: red;
+      font-size: 1.4rem;
     }
     input {
       width: 100%;
