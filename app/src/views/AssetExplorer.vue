@@ -417,8 +417,8 @@
         </div>
       </div>
       <div class="flex">
-        <a class="link" @click="showBulkUploadModal=true">Import from file</a>
-        <router-link class="link" to="/assets-explorer/new"
+        <a class="link cursor-pointer" @click="showBulkUploadModal=true">Import from file</a>
+        <router-link class="link cursor-pointer" to="/assets-explorer/new"
           >Add New Asset</router-link
         >
       </div>

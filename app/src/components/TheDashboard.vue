@@ -1,16 +1,6 @@
 <template>
   <div class="grid sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-12">
-    <base-card></base-card>
-    <base-card></base-card>
-    <base-card></base-card>
-    <base-card></base-card>
-    <base-card></base-card>
-    <base-card></base-card>
-    <base-card></base-card>
-    <base-card></base-card>
-    <base-card></base-card>
-    <base-card></base-card>
-    <base-card></base-card>
+      <base-card v-for="program in programs" :key="program.id" :name="program.name"></base-card>    
     <div class="h-60 rounded-2xl flex items-center justify-center">
       <button
         @click="showAddNewProgramModal = true"
@@ -55,6 +45,52 @@ export default {
   data(){
     return {
       showAddNewProgramModal: false,
+      programs: [
+        {
+          id: 1,
+          name: 'Program A'
+        },
+        {
+          id: 2,
+          name: 'Program A'
+        },
+        {
+          id: 3,
+          name: 'Program A'
+        },
+        {
+          id: 4,
+          name: 'Program A'
+        },
+        {
+          id: 5,
+          name: 'Program A'
+        },
+        {
+          id: 6,
+          name: 'Program A'
+        },
+        {
+          id: 7,
+          name: 'Program A'
+        },
+        {
+          id: 8,
+          name: 'Program A'
+        },
+        {
+          id: 9,
+          name: 'Program A'
+        },
+        {
+          id: 10,
+          name: 'Program A'
+        },
+        {
+          id: 11,
+          name: 'Program A'
+        }
+      ]
     }
   }
 };

@@ -73,6 +73,8 @@
                 outline-none
                 focus:outline-none
               "
+              required
+              v-model="name"
             />
             <p class="text-3xl mb-5 mt-14">Description</p>
             <textarea
@@ -92,6 +94,8 @@
                 outline-none
                 focus:outline-none
               "
+              required
+              v-model="description"
             ></textarea>
           </form>
         </div>
@@ -126,3 +130,13 @@
     </div>
   </div>
 </template>
+<script>
+export default {
+  data(){
+    return {
+      name: "",
+      description: ""
+    }
+  }
+}
+</script>
