@@ -47,6 +47,22 @@
       </p>
       <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
       <button type="submit">Create Account</button>
+
+      <h5
+        class="
+          text-black-600 text-2xl
+          
+          flex
+          items-center
+          justify-center
+          my-2
+        "
+      >
+        Already have an account ?
+        <router-link to="/login" class="login-link ml-2 font-semibold"
+          >Login</router-link
+        >
+      </h5>
     </form>
   </div>
 </template>
@@ -180,7 +196,6 @@ export default {
       font-size: 1.2rem;
       margin-bottom: 1rem;
     }
-
     button {
       width: 100%;
       background-color: $color-primary;
@@ -191,6 +206,9 @@ export default {
       font-weight: bold;
       margin: 2rem 0;
       border-radius: 0.5rem;
+    }
+    .login-link {
+      color: $color-primary;
     }
   }
 }
