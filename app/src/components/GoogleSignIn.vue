@@ -7,6 +7,7 @@
 
 <script>
 export default {
+  emits: ["showLoading"],
   methods: {
     async handleClickSignIn() {
       try {
@@ -14,6 +15,7 @@ export default {
         if (!googleUser) {
           return null;
         }
+        this.$emit("showLoading", true);
         const payloadData = {
           token: googleUser.getAuthResponse(),
           email: googleUser.getBasicProfile().getEmail(),
@@ -27,6 +29,7 @@ export default {
         console.error(error);
         return null;
       }
+      this.$emit("showLoading", false);
     },
   },
 };
