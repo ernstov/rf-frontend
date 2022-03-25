@@ -2,7 +2,7 @@
   <div class="login flex justify-center items-center">
     <form @submit.prevent="login()">
       <h1>Login</h1>
-        <p v-if="errorMessage" class="error">{{this.errorMessage}}</p>
+      <p v-if="errorMessage" class="error">{{ this.errorMessage }}</p>
       <input type="email" placeholder="Email" v-model="email" required />
       <input
         type="password"
@@ -10,12 +10,14 @@
         v-model="password"
         required
       />
-      <button>Login</button>
-      <google-sign-in></google-sign-in>
+      <button class="login-btn">Login</button>
+      <google-sign-in class="login-btn"></google-sign-in>
       <p>
         Don’t have account ? <router-link to="/register">Sign up</router-link>
       </p>
-      <button class="forgot-btn" @click.prevent="forgotPassword">Forgot Password</button>
+      <button class="forgot-btn" @click.prevent="forgotPassword">
+        Forgot Password
+      </button>
     </form>
   </div>
 </template>
@@ -54,33 +56,31 @@ export default {
           .dispatch("authModule/login", payloadData)
           .then((response) => {
             // console.log(response);
-            if(response.status === 200){
-              this.$router.push('program-dashboard');
+            if (response.status === 200) {
+              this.$router.push("program-dashboard");
             }
           })
           .catch((error) => {
-              console.log("Catch");
-              console.log(error);
-              if (error.response.status === 401) {
-                console.log('401');
-                this.errorMessage = error.response.data;
-                console.log(this.errorMessage);
-                console.log(error.response.data);
-                for (const key in error.response.data) {
-                  console.log(key);
-                }
+            console.log("Catch");
+            console.log(error);
+            if (error.response.status === 401) {
+              console.log("401");
+              this.errorMessage = error.response.data;
+              console.log(this.errorMessage);
+              console.log(error.response.data);
+              for (const key in error.response.data) {
+                console.log(key);
               }
-          })
-      }
-      catch (error) {
+            }
+          });
+      } catch (error) {
         console.log("Try Catch");
         return error;
-        
       }
     },
-    forgotPassword(){
-      this.$router.push('/forgot-password');
-    }
+    forgotPassword() {
+      this.$router.push("/forgot-password");
+    },
   },
 };
 </script>
@@ -103,7 +103,7 @@ export default {
       text-align: center;
       margin-bottom: 6rem;
     }
-    .error{
+    .error {
       color: red;
       font-size: 1.4rem;
     }
@@ -141,7 +141,7 @@ export default {
         font-weight: bold;
       }
     }
-    .forgot-btn{
+    .forgot-btn {
       font-size: 1.4rem;
     }
   }
