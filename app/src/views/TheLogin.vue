@@ -1,9 +1,15 @@
 <template>
   <div class="login flex justify-center items-center">
-    <form @submit.prevent="login()">
+    <div class="form">
       <h1>Login</h1>
       <p v-if="errorMessage" class="error">{{ this.errorMessage }}</p>
-      <input class="mb-8" type="email" placeholder="Email" v-model="email" required />
+      <input
+        class="mb-8"
+        type="email"
+        placeholder="Email"
+        v-model="email"
+        required
+      />
       <input
         type="password"
         placeholder="Password"
@@ -13,12 +19,50 @@
       <button class="forgot-btn" @click.prevent="forgotPassword">
         Forgot Password?
       </button>
-      <button class="login-btn">Login</button>
-      <google-sign-in class="login-btn"></google-sign-in>
+      <button class="login-btn" @click="login">Login</button>
+      <google-sign-in
+        class="login-btn"
+        @showLoading="setLoading"
+      ></google-sign-in>
       <p>
         Don’t have account ? <router-link to="/register">Sign up</router-link>
       </p>
-    </form>
+    </div>
+    <div
+      v-if="isLoading"
+      wire:loading
+      class="
+        fixed
+        top-0
+        left-0
+        right-0
+        bottom-0
+        w-full
+        h-screen
+        z-50
+        overflow-hidden
+        bg-gray-700
+        opacity-75
+        flex flex-col
+        items-center
+        justify-center
+      "
+    >
+      <div
+        class="
+          loader
+          ease-linear
+          rounded-full
+          border-4 border-t-4 border-gray-200
+          h-20
+          w-20
+          mb-4
+        "
+      ></div>
+      <h2 class="text-center text-white text-xl text-5xl font-medium mt-4">
+        Please wait
+      </h2>
+    </div>
   </div>
 </template>
 <script>
@@ -32,6 +76,7 @@ export default {
     return {
       email: null,
       password: null,
+      isLoading: false,
 
       // validation data property
 
@@ -69,6 +114,9 @@ export default {
     forgotPassword() {
       this.$router.push("/forgot-password");
     },
+    setLoading(value) {
+      this.isLoading = value;
+    },
   },
 };
 </script>
@@ -78,7 +126,7 @@ export default {
   height: 100vh;
   text-align: center;
 
-  form {
+  .form {
     width: 40rem;
     background-color: $color-white;
     padding: 3rem;
@@ -131,8 +179,31 @@ export default {
       font-size: 1.4rem;
       width: 100%;
       text-align: right;
-     
+
       margin: 1rem 0;
+    }
+  }
+  .loader {
+    border-top-color: $color-primary;
+    -webkit-animation: spinner 1.5s linear infinite;
+    animation: spinner 1.5s linear infinite;
+  }
+
+  @-webkit-keyframes spinner {
+    0% {
+      -webkit-transform: rotate(0deg);
+    }
+    100% {
+      -webkit-transform: rotate(360deg);
+    }
+  }
+
+  @keyframes spinner {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
     }
   }
 }

@@ -38,7 +38,7 @@ export default {
         context.commit("setUser", payload.email);
       })
       .catch((error) => {
-        console.log(error);
+        console.error(error);
       });
   },
   logout(context) {
