@@ -3,26 +3,25 @@
     <form @submit.prevent="login()">
       <h1>Login</h1>
       <p v-if="errorMessage" class="error">{{ this.errorMessage }}</p>
-      <input type="email" placeholder="Email" v-model="email" required />
+      <input class="mb-8" type="email" placeholder="Email" v-model="email" required />
       <input
         type="password"
         placeholder="Password"
         v-model="password"
         required
       />
+      <button class="forgot-btn" @click.prevent="forgotPassword">
+        Forgot Password?
+      </button>
       <button class="login-btn">Login</button>
       <google-sign-in class="login-btn"></google-sign-in>
       <p>
         Don’t have account ? <router-link to="/register">Sign up</router-link>
       </p>
-      <button class="forgot-btn" @click.prevent="forgotPassword">
-        Forgot Password
-      </button>
     </form>
   </div>
 </template>
 <script>
-// import ApiService from "@/services/api.service.js"
 import GoogleSignIn from "@/components/GoogleSignIn.vue";
 
 export default {
@@ -54,23 +53,12 @@ export default {
         };
         await this.$store
           .dispatch("authModule/login", payloadData)
-          .then((response) => {
-            // console.log(response);
-            if (response.status === 200) {
-              this.$router.push("program-dashboard");
-            }
+          .then(() => {
+            this.$router.push("program-dashboard");
           })
           .catch((error) => {
-            console.log("Catch");
-            console.log(error);
             if (error.response.status === 401) {
-              console.log("401");
-              this.errorMessage = error.response.data;
-              console.log(this.errorMessage);
-              console.log(error.response.data);
-              for (const key in error.response.data) {
-                console.log(key);
-              }
+              this.errorMessage = error.response.data.detail;
             }
           });
       } catch (error) {
@@ -109,7 +97,6 @@ export default {
     }
     input {
       width: 100%;
-      margin-bottom: 2rem;
       height: 4rem;
       padding: 1.5rem 0;
       font-size: 1.5rem;
@@ -133,7 +120,6 @@ export default {
     }
     p {
       font-size: 1.5rem;
-      font-family: $font-secondary;
       text-align: center;
       margin: 1rem 0;
       a {
@@ -143,6 +129,10 @@ export default {
     }
     .forgot-btn {
       font-size: 1.4rem;
+      width: 100%;
+      text-align: right;
+     
+      margin: 1rem 0;
     }
   }
 }

@@ -2,7 +2,7 @@ import ApiService from "@/services/api.service.js";
 import StorageService from "@/services/storage.service.js";
 
 export default {
-  async signup(_,payload) {
+  async signup(_, payload) {
     const requestObject = {
       email: payload.email,
       username: payload.username,
@@ -16,33 +16,30 @@ export default {
       email: payload.email,
       password: payload.password,
     };
-    await ApiService.post("auth/jwt/create/", requestObject)
-      .then(function (response) {
-        const tokens = response.data;
-        StorageService.saveData("access", tokens.access);
-        StorageService.saveData("refresh", tokens.refresh);
-        context.commit("setUser", requestObject.email);
-        return response;
-      })
-      .catch(function (error) {
-        console.error(error);
-      });
-  },
-  async googleLogin(context, payload) {
-    console.log(payload);
-    const requestObject = {
-      access_token: payload.token.access_token
-    }
-    await ApiService.post("auth/google/", requestObject).then((response) => {
+    await ApiService.post("auth/jwt/create/", requestObject).then(function (
+      response
+    ) {
       const tokens = response.data;
       StorageService.saveData("access", tokens.access);
       StorageService.saveData("refresh", tokens.refresh);
+      context.commit("setUser", requestObject.email);
+    });
+  },
+  async googleLogin(context, payload) {
+    const requestObject = {
+      access_token: payload.token.access_token,
+    };
+    await ApiService.post("auth/google/", requestObject)
+      .then((response) => {
+        const tokens = response.data;
+        StorageService.saveData("access", tokens.access);
+        StorageService.saveData("refresh", tokens.refresh);
 
-      context.commit("setUser", payload.email);
-    }).catch((error) => {
-      console.log(error);
-    })
-
+        context.commit("setUser", payload.email);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   },
   logout(context) {
     StorageService.removeData("access");
