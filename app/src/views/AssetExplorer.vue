@@ -1,7 +1,7 @@
 <template>
   <div>
     <the-navbar></the-navbar>
-    <div class="px-60 py-32">
+    <div class="px-60 py-32 h-screen">
       <div class="flex">
         <base-dropdown></base-dropdown>
         <base-dropdown></base-dropdown>
@@ -124,6 +124,7 @@
                 </thead>
                 <tbody>
                   <tr
+                  v-for="family in families" :key="family.familyId"
                     class="
                       bg-white
                       border-b
@@ -139,7 +140,7 @@
                         dark:text-gray-400
                       "
                     >
-                      XYZABCD
+                      {{family.familyId}}
                     </td>
                     <td
                       class="
@@ -150,7 +151,9 @@
                         dark:text-gray-400
                       "
                     >
-                      W01234567, DE0234567891
+                    <span v-for="patient in family.patients" :key="patient">
+                      {{patient}} 
+                    </span>
                     </td>
                     <td
                       class="
@@ -161,7 +164,9 @@
                         dark:text-gray-400
                       "
                     >
-                      John Doe, Max Mustermann
+                    <span v-for="inventor in family.inventors" :key="inventor">
+                      {{inventor}}
+                    </span>
                     </td>
                     <td
                       class="
@@ -172,7 +177,7 @@
                         dark:text-gray-400
                       "
                     >
-                      Program A
+                      {{family.workflow}}
                     </td>
                     <td
                       class="
@@ -183,8 +188,8 @@
                         h-2
                       "
                     >
-                      <p class="dark:text-gray-400 bg-green-400 p-3 w-40">
-                        In Progress
+                      <p class="dark:text-gray-400 p-3 w-40" :class="{'bg-yellow-300': family.status=='On Hold', 'bg-green-400': family.status=='In Progress'}">
+                        {{family.status}}
                       </p>
                     </td>
                     <td
@@ -196,7 +201,7 @@
                         dark:text-gray-400
                       "
                     >
-                      20-01-2022 05:00;01 PM
+                    {{family.lastUpdated}}
                     </td>
                     <td
                       class="
@@ -219,6 +224,7 @@
                           bg-gray-300
                           p-3
                         "
+                        @click="shoeEditAssetModal = true"
                         >Edit</a
                       >
                     </td>
@@ -244,381 +250,7 @@
                           bg-gray-300
                           p-3
                         "
-                        >View</a
-                      >
-                    </td>
-                  </tr>
-                  <tr
-                    class="
-                      bg-white
-                      border-b
-                      dark:bg-gray-800 dark:border-gray-700
-                    "
-                  >
-                    <td
-                      class="
-                        py-5
-                        px-10
-                        text-2xl text-gray-500
-                        whitespace-nowrap
-                        dark:text-gray-400
-                      "
-                    >
-                      KKUXDBH
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl text-gray-500
-                        whitespace-nowrap
-                        dark:text-gray-400
-                      "
-                    >
-                      W01234567, DE0234567891
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl text-gray-500
-                        whitespace-nowrap
-                        dark:text-gray-400
-                      "
-                    >
-                      John Doe, Max Mustermann
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl text-gray-500
-                        whitespace-nowrap
-                        dark:text-gray-400
-                      "
-                    >
-                      Program A
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl text-gray-500
-                        whitespace-nowrap
-                        h-2
-                      "
-                    >
-                      <p class="dark:text-gray-400 bg-yellow-300 p-3 w-40">
-                        On Hold
-                      </p>
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl text-gray-500
-                        whitespace-nowrap
-                        dark:text-gray-400
-                      "
-                    >
-                      20-01-2022 05:00;01 PM
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl
-                        font-medium
-                        text-right
-                        whitespace-nowrap
-                      "
-                    >
-                      <a
-                        href="#"
-                        class="
-                          text-black-600
-                          dark:text-black-500
-                          hover:underline
-                          dark:text-white-400
-                          hover:no-underline
-                          bg-gray-300
-                          p-3
-                        "
-                        >Edit</a
-                      >
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl
-                        font-medium
-                        text-right
-                        whitespace-nowrap
-                        pr-10
-                      "
-                    >
-                      <a
-                        href="#"
-                        class="
-                          text-black-600
-                          dark:text-black-500
-                          hover:underline
-                          dark:text-white-400
-                          hover:no-underline
-                          bg-gray-300
-                          p-3
-                        "
-                        >View</a
-                      >
-                    </td>
-                  </tr>
-                  <tr
-                    class="
-                      bg-white
-                      border-b
-                      dark:bg-gray-800 dark:border-gray-700
-                    "
-                  >
-                    <td
-                      class="
-                        py-5
-                        px-10
-                        text-2xl text-gray-500
-                        whitespace-nowrap
-                        dark:text-gray-400
-                      "
-                    >
-                      XYZABCD
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl text-gray-500
-                        whitespace-nowrap
-                        dark:text-gray-400
-                      "
-                    >
-                      W01234567, DE0234567891
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl text-gray-500
-                        whitespace-nowrap
-                        dark:text-gray-400
-                      "
-                    >
-                      John Doe, Max Mustermann
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl text-gray-500
-                        whitespace-nowrap
-                        dark:text-gray-400
-                      "
-                    >
-                      Program A
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl text-gray-500
-                        whitespace-nowrap
-                        h-2
-                      "
-                    >
-                      <p class="dark:text-gray-400 bg-green-400 p-3 w-40">
-                        In Progress
-                      </p>
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl text-gray-500
-                        whitespace-nowrap
-                        dark:text-gray-400
-                      "
-                    >
-                      20-01-2022 05:00;01 PM
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl
-                        font-medium
-                        text-right
-                        whitespace-nowrap
-                      "
-                    >
-                      <a
-                        href="#"
-                        class="
-                          text-black-600
-                          dark:text-black-500
-                          hover:underline
-                          dark:text-white-400
-                          hover:no-underline
-                          bg-gray-300
-                          p-3
-                        "
-                        >Edit</a
-                      >
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl
-                        font-medium
-                        text-right
-                        whitespace-nowrap
-                        pr-10
-                      "
-                    >
-                      <a
-                        href="#"
-                        class="
-                          text-black-600
-                          dark:text-black-500
-                          hover:underline
-                          dark:text-white-400
-                          hover:no-underline
-                          bg-gray-300
-                          p-3
-                        "
-                        >View</a
-                      >
-                    </td>
-                  </tr>
-                  <tr
-                    class="
-                      bg-white
-                      border-b
-                      dark:bg-gray-800 dark:border-gray-700
-                    "
-                  >
-                    <td
-                      class="
-                        py-5
-                        px-10
-                        text-2xl text-gray-500
-                        whitespace-nowrap
-                        dark:text-gray-400
-                      "
-                    >
-                      KKUXDBH
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl text-gray-500
-                        whitespace-nowrap
-                        dark:text-gray-400
-                      "
-                    >
-                      W01234567, DE0234567891
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl text-gray-500
-                        whitespace-nowrap
-                        dark:text-gray-400
-                      "
-                    >
-                      John Doe, Max Mustermann
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl text-gray-500
-                        whitespace-nowrap
-                        dark:text-gray-400
-                      "
-                    >
-                      Program A
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl text-gray-500
-                        whitespace-nowrap
-                        h-2
-                      "
-                    >
-                      <p class="dark:text-gray-400 bg-yellow-300 p-3 w-40">
-                        On Hold
-                      </p>
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl text-gray-500
-                        whitespace-nowrap
-                        dark:text-gray-400
-                      "
-                    >
-                      20-01-2022 05:00;01 PM
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl
-                        font-medium
-                        text-right
-                        whitespace-nowrap
-                      "
-                    >
-                      <a
-                        href="#"
-                        class="
-                          text-black-600
-                          dark:text-black-500
-                          hover:underline
-                          dark:text-white-400
-                          hover:no-underline
-                          bg-gray-300
-                          p-3
-                        "
-                        >Edit</a
-                      >
-                    </td>
-                    <td
-                      class="
-                        py-5
-                        px-6
-                        text-2xl
-                        font-medium
-                        text-right
-                        whitespace-nowrap
-                        pr-10
-                      "
-                    >
-                      <a
-                        href="#"
-                        class="
-                          text-black-600
-                          dark:text-black-500
-                          hover:underline
-                          dark:text-white-400
-                          hover:no-underline
-                          bg-gray-300
-                          p-3
-                        "
+                        @click="$router.push('/assets-view')"
                         >View</a
                       >
                     </td>
@@ -785,24 +417,71 @@
         </div>
       </div>
       <div class="flex">
-        <a href="" class="link">Import from file</a>
-        <router-link class="link" to="/assets-explorer/new"
+        <a class="link cursor-pointer" @click="showBulkUploadModal=true">Import from file</a>
+        <router-link class="link cursor-pointer" to="/assets-explorer/new"
           >Add New Asset</router-link
         >
       </div>
     </div>
+    <bulk-upload-modal v-if="showBulkUploadModal" @close-modal="showBulkUploadModal=false"></bulk-upload-modal>
+    <edit-asset-modal v-if="shoeEditAssetModal" @cancel="shoeEditAssetModal = false"></edit-asset-modal>
   </div>
 </template>
 <script>
 import TheNavbar from "@/components/layout/TheNavbar.vue";
 import BaseDropdown from "@/components/BaseComponents/BaseDropdown.vue";
+import BulkUploadModal from "@/components/Modals/BulkUploadModal.vue";
+import EditAssetModal from "@/components/Modals/EditAssetModal.vue";
 
 export default {
   components: {
     TheNavbar,
     BaseDropdown,
+    BulkUploadModal,
+    EditAssetModal,
   },
+  data(){
+    return {
+      shoeEditAssetModal: false,
+      showBulkUploadModal: false,
+      families: [
+        {
+          familyId: 1,
+          patients: ['W01234567, ', 'DE0234567891'],
+          inventors: [' John Doe, ', 'Max Mustermann '],
+          workflow: 'Program A',
+          status: 'In Progress',
+          lastUpdated: '20-01-2022 05:00;01 PM '
+        },
+        {
+          familyId: 2,
+          patients: ['W01234567, ', 'DE0234567891'],
+          inventors: [' John Doe, ', 'Max Mustermann '],
+          workflow: 'Program A',
+          status: 'On Hold',
+          lastUpdated: '20-01-2022 05:00;01 PM '
+        },
+        {
+          familyId: 3,
+          patients: ['W01234567, ', 'DE0234567891'],
+          inventors: [' John Doe, ', 'Max Mustermann '],
+          workflow: 'Program A',
+          status: 'In Progress',
+          lastUpdated: '20-01-2022 05:00;01 PM '
+        },
+        {
+          familyId: 4,
+          patients: ['W01234567, ', 'DE0234567891'],
+          inventors: [' John Doe, ', 'Max Mustermann '],
+          workflow: 'Program A',
+          status: 'On Hold',
+          lastUpdated: '20-01-2022 05:00;01 PM '
+        }
+      ]
+    }
+  }
 };
+
 </script>
 <style lang="scss" scoped>
 .link {

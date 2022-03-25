@@ -1,7 +1,7 @@
 <template>
   <div>
     <the-navbar></the-navbar>
-    <div class="px-60 py-32">
+    <div class="px-60 py-32 h-screen">
       <the-dashboard></the-dashboard>
     </div>
   </div>

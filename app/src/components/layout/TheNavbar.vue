@@ -80,22 +80,70 @@
               alt="Workflow"
             />
           </div>
-          <div class="hidden sm:block sm:ml-6">
+          <div class="hidden sm:block sm:ml-6 mr-16">
             <div class="flex space-x-4">
-              <a
-                href="#"
-                class="
-                  bg-gray-900
-                  text-white
-                  px-3
-                  py-2
-                  rounded-md
-                  text-2xl
-                  font-medium
-                "
+              <p
+                class="text-white py-2 rounded-md text-4xl font-medium"
                 aria-current="page"
-                >Dashboard</a
               >
+                Rainforest
+              </p>
+            </div>
+          </div>
+          <div class="hidden sm:block sm:ml-6 mr-16">
+            <div class="flex">
+              <div class="px-2 pt-2 pb-3 space-y-1">
+                <router-link
+                  to="/project-dashboard"
+                  class="
+                    text-white
+                    block
+                    px-3
+                    py-2
+                    rounded-md
+                    text-base
+                    font-medium
+                    text-2xl
+                  "
+                  aria-current="page"
+                  >Programs
+                </router-link>
+              </div>
+              <div class="px-2 pt-2 pb-3 space-y-1">
+                <router-link
+                  to="/program-dashboard"
+                  class="
+                    text-white
+                    block
+                    px-3
+                    py-2
+                    rounded-md
+                    text-base
+                    font-medium
+                    text-2xl
+                  "
+                  aria-current="page"
+                >
+                  Projects</router-link
+                >
+              </div>
+              <div class="px-2 pt-2 pb-3 space-y-1">
+                <router-link
+                  to="/assets-explorer"
+                  class="
+                    text-white
+                    block
+                    px-3
+                    py-2
+                    rounded-md
+                    text-base
+                    font-medium
+                    text-2xl
+                  "
+                  aria-current="page"
+                  >Asset Explorer</router-link
+                >
+              </div>
             </div>
           </div>
         </div>
@@ -229,20 +277,55 @@
 
     <div class="sm:hidden" id="mobile-menu">
       <div class="px-2 pt-2 pb-3 space-y-1">
-        <a
-          href="#"
+        <router-link
+          to="/"
           class="
-            bg-gray-900
-            text-white
+            text-center text-white
             block
             px-3
             py-2
             rounded-md
             text-base
             font-medium
+            text-3xl
           "
           aria-current="page"
-          >Dashboard</a
+          >Programs
+        </router-link>
+      </div>
+      <div class="px-2 pt-2 pb-3 space-y-1">
+        <router-link
+          to="/"
+          class="
+            text-center text-white
+            block
+            px-3
+            py-2
+            rounded-md
+            text-base
+            font-medium
+            text-3xl
+          "
+          aria-current="page"
+        >
+          Projects</router-link
+        >
+      </div>
+      <div class="px-2 pt-2 pb-3 space-y-1">
+        <router-link
+          to="/"
+          class="
+            text-center text-white
+            block
+            px-3
+            py-2
+            rounded-md
+            text-base
+            font-medium
+            text-3xl
+          "
+          aria-current="page"
+          >Asset Explorer</router-link
         >
       </div>
     </div>
@@ -270,4 +353,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.router-link-active {
+  background-color: rgba(17, 24, 39);
+}
 </style>
