@@ -25,10 +25,7 @@ export default {
         return response;
       })
       .catch(function (error) {
-        if(error.response.status === 401){
-          console.log("401");
-        }
-        console.log(error);
+        console.error(error);
       });
   },
   async googleLogin(context, payload) {

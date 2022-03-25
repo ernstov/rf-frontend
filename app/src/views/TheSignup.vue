@@ -45,7 +45,7 @@
       <p v-if="isConfirmPasswordValid" class="validation-error">
         {{ confirmPasswordMessage }}
       </p>
-      <p v-if="errorMessage" class="error">{{errorMessage}}</p>
+      <p v-if="errorMessage" class="error">{{ errorMessage }}</p>
       <button type="submit">Create Account</button>
     </form>
   </div>
@@ -67,19 +67,19 @@ export default {
       isPasswordValid: false,
       isConfirmPasswordValid: false,
 
-      userNameMessage: '',
-      emailMessage: '',
-      passwordMessage: '',
-      confirmPasswordMessage: '',
-      errorMessage: '',
+      userNameMessage: "",
+      emailMessage: "",
+      passwordMessage: "",
+      confirmPasswordMessage: "",
+      errorMessage: "",
     };
   },
   methods: {
     async submitForm() {
-      this.emailMessage = '';
-      this.passwordMessage = '';
-      this.userNameMessage = '';
-      this.confirmPasswordMessage = '';
+      this.emailMessage = "";
+      this.passwordMessage = "";
+      this.userNameMessage = "";
+      this.confirmPasswordMessage = "";
       try {
         const payloadData = {
           email: this.email,
@@ -90,10 +90,8 @@ export default {
         console.log(payloadData);
         await this.$store
           .dispatch("authModule/signup", payloadData)
-          .then((response) => {
-            if (response.status === 201) {
-              this.$router.replace("/login");
-            }
+          .then(() => {
+            this.$router.replace("/login");
           });
       } catch (error) {
         if (error.response.status === 400) {
@@ -122,8 +120,8 @@ export default {
                 this.confirmPasswordMessage += `${element} `;
               });
             }
-            if(key === 'non_field_errors'){
-               error.response.data[key].forEach((element) => {
+            if (key === "non_field_errors") {
+              error.response.data[key].forEach((element) => {
                 this.errorMessage += `${element} `;
               });
             }
@@ -176,12 +174,13 @@ export default {
     .input-error {
       border-bottom: 2px solid red;
     }
-    .validation-error, .error{
+    .validation-error,
+    .error {
       color: red;
       font-size: 1.2rem;
       margin-bottom: 1rem;
     }
-    
+
     button {
       width: 100%;
       background-color: $color-primary;
