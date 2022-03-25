@@ -1,6 +1,6 @@
 <template>
   <div class="login flex justify-center items-center">
-    <form @submit.prevent="login()">
+    <div class="form">
       <h1>Login</h1>
       <p v-if="errorMessage" class="error">{{ this.errorMessage }}</p>
       <input
@@ -19,12 +19,15 @@
       <button class="forgot-btn" @click.prevent="forgotPassword">
         Forgot Password?
       </button>
-      <button class="login-btn">Login</button>
-      <google-sign-in class="login-btn"></google-sign-in>
+      <button class="login-btn" @click="login">Login</button>
+      <google-sign-in
+        class="login-btn"
+        @showLoading="setLoading"
+      ></google-sign-in>
       <p>
         Don’t have account ? <router-link to="/register">Sign up</router-link>
       </p>
-    </form>
+    </div>
     <div
       v-if="isLoading"
       wire:loading
@@ -123,7 +126,7 @@ export default {
   height: 100vh;
   text-align: center;
 
-  form {
+  .form {
     width: 40rem;
     background-color: $color-white;
     padding: 3rem;
