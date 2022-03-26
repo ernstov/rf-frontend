@@ -1,6 +1,5 @@
 <template>
   <div class="assets-view">
-    <the-navbar></the-navbar>
     <div class="px-60 py-32 h-full">
       <h2 class="text-6xl mb-12">Family ID</h2>
 
@@ -42,11 +41,7 @@
   </div>
 </template>
 <script>
-import TheNavbar from "@/components/layout/TheNavbar.vue";
 
 export default {
-  components: {
-    TheNavbar,
-  },
 };
 </script>
