@@ -1,6 +1,5 @@
 <template>
   <div class="add-new-asset">
-    <the-navbar></the-navbar>
     <div class="px-60 py-32 bg-transparent h-full">
       <form action="" class="bg-white p-14 rounded-md">
         <h2 class="text-6xl mb-12">Add New Assets</h2>
@@ -194,12 +193,10 @@
   </div>
 </template>
 <script>
-import TheNavbar from "@/components/layout/TheNavbar.vue";
 import BaseDropdown from "@/components/BaseComponents/BaseDropdown.vue";
 
 export default {
   components: {
-    TheNavbar,
     BaseDropdown,
     // Modal,
   },

@@ -94,7 +94,7 @@
             <div class="flex">
               <div class="px-2 pt-2 pb-3 space-y-1">
                 <router-link
-                  to="/project-dashboard"
+                  to="/program-dashboard"
                   class="
                     text-white
                     block
@@ -111,7 +111,7 @@
               </div>
               <div class="px-2 pt-2 pb-3 space-y-1">
                 <router-link
-                  to="/program-dashboard"
+                  to="/project-dashboard"
                   class="
                     text-white
                     block

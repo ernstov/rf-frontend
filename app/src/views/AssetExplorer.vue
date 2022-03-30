@@ -1,6 +1,5 @@
 <template>
   <div>
-    <the-navbar></the-navbar>
     <div class="px-60 py-32 h-screen">
       <div class="flex">
         <base-dropdown></base-dropdown>
@@ -428,14 +427,12 @@
   </div>
 </template>
 <script>
-import TheNavbar from "@/components/layout/TheNavbar.vue";
 import BaseDropdown from "@/components/BaseComponents/BaseDropdown.vue";
 import BulkUploadModal from "@/components/Modals/BulkUploadModal.vue";
 import EditAssetModal from "@/components/Modals/EditAssetModal.vue";
 
 export default {
   components: {
-    TheNavbar,
     BaseDropdown,
     BulkUploadModal,
     EditAssetModal,

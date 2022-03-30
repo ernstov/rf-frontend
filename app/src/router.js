@@ -6,6 +6,7 @@ import PasswordForgot from "@/views/PasswordForgot.vue";
 import AssetExplorer from "@/views/AssetExplorer.vue";
 import AssetView from "@/views/AssetView.vue";
 import TheProgram from "@/components/TheProgram.vue";
+import TheProject from "@/components/TheProject.vue";
 import AddNewAssets from "@/components/AddNewAssets.vue";
 import store from "@/store/index.js";
 
@@ -42,6 +43,14 @@ const router = createRouter({
       name: "Password-forgot",
       meta: {
         hideForAuth: true,
+      },
+    },
+    {
+      path: "/project-dashboard",
+      component: TheProject,
+      name: "Project-dashboard",
+      meta: {
+        requiresAuth: true,
       },
     },
     {
