@@ -31,34 +31,43 @@
 // }
 // export default ApiService;
 
-import axios from "axios";
+import axios from 'axios'
+import StorageService from './storage.service'
 
 // Manage all app-wide Api calls
 
-
 const ApiService = {
-  init(baseUrl) {
-    axios.defaults.baseURL = baseUrl;
-  },
+	init(baseUrl) {
+		axios.defaults.baseURL = baseUrl
+		this.setAuthHeaders()
+	},
 
-  setHeader(key, value) {
-    axios.defaults.headers.common[key] = value;
-  },
-  removeHeader() {
-    axios.defaults.headers.common = {};
-  },
-  get(data) {
-    return axios.get(data);
-  },
-  post(resource, data) {
-    return axios.post(axios.defaults.baseURL + resource, data);
-  },
-  put(data) {
-    return axios.put(data);
-  },
-  delete(data) {
-    axios.delete(data);
-  },
-};
+	setHeader(key, value) {
+		axios.defaults.headers.common[key] = value
+	},
+	removeHeader() {
+		axios.defaults.headers.common = {}
+	},
+	get(data) {
+		return axios.get(data)
+	},
+	post(resource, data) {
+		return axios.post(axios.defaults.baseURL + resource, data)
+	},
+	put(data) {
+		return axios.put(data)
+	},
+	delete(data) {
+		axios.delete(data)
+	},
+	setAuthHeaders() {
+		const token = StorageService.getToken()
+		console.log('set headers', token)
 
-export default ApiService;
+		if (token) {
+			this.setHeader('Authorization', `Bearer ${token}`)
+		}
+	},
+}
+
+export default ApiService
