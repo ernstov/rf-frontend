@@ -35,3 +35,29 @@ html {
     font-size: 33%;
   }
 }
+
+.search-select .vs__search::placeholder,
+.search-select .vs__dropdown-toggle,
+.search-select .vs__dropdown-menu {
+  color: #394066;
+  font-size: 16px;
+  border: 0.5px solid rgba(0, 0, 0, 0.124);
+}
+
+.vs__selected{
+  background: #c6d3ff !important;
+}
+
+.search-select .vs__clear,
+.search-select .vs__open-indicator {
+  fill: #394066;
+}
+.search-select input{
+  font-size: 16px !important;
+}
+.search-select li{
+  padding: 8px;
+}
+.vs1__combobox{
+  padding: 0 !important;
+}
