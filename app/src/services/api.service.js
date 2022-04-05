@@ -48,11 +48,11 @@ const ApiService = {
 	removeHeader() {
 		axios.defaults.headers.common = {}
 	},
-	get(data) {
-		return axios.get(data)
+	get(path, options) {
+		return axios.get(path, options || {})
 	},
-	post(resource, data) {
-		return axios.post(axios.defaults.baseURL + resource, data)
+	post(resource, data, options) {
+		return axios.post(axios.defaults.baseURL + resource, data, options || {})
 	},
 	put(data) {
 		return axios.put(data)

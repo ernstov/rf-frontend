@@ -51,6 +51,9 @@
               <div>
                 <p class="text-3xl mb-5">CSV File</p>
                 <input
+                  type="file"
+                  ref="upload"
+                  accept=".csv"
                   class="
                     placeholder-gray-500 placeholder-opacity-50
                     w-full
@@ -58,14 +61,18 @@
                     text-2xl
                     px-5
                     border border-gray-300
+                    pt-2
                     rounded-md
                     outline-none
                     focus:outline-none
                   "
+                  @change="handleFile"
                 />
               </div>
               <div>
-                <base-dropdown class="w-full"></base-dropdown>
+                <p class="text-3xl mb-5">Select Workflow</p>
+
+                <WorkflowSelect v-model="selectedWorkflows" />
               </div>
             </div>
           </form>
@@ -92,6 +99,7 @@
               bg-green-600
               hover:bg-green-700
             "
+            @click="submit"
           >
             Save
           </button>
@@ -125,11 +133,44 @@
   </div>
 </template>
 <script>
-import BaseDropdown from "@/components/BaseComponents/BaseDropdown.vue";
+import WorkflowSelect from "@/components/WorkflowSelect.vue";
+import { ref } from "@vue/reactivity";
+import { AssetRepository } from "../../repositories/asset";
+import { useToast } from "vue-toastification";
 
 export default {
+  setup() {
+    const selectedWorkflows = ref([]);
+    const file = ref(null);
+    const toast = useToast();
+    return {
+      file,
+      selectedWorkflows,
+      toast,
+    };
+  },
   components: {
-    BaseDropdown,
+    WorkflowSelect,
+  },
+  methods: {
+    async handleFile() {
+      this.file = this.$refs.upload.files[0];
+    },
+    async submit() {
+      const fd = new FormData();
+      this.selectedWorkflows.forEach((id) => {
+        fd.append("workflows", id);
+      });
+      fd.append("file", this.file);
+      try {
+        await AssetRepository.createWithCSV(fd);
+        this.toast.success("Bulk upload success.");
+        this.$emit("close-modal");
+      } catch (error) {
+        this.toast.error(error.message);
+        console.log(error);
+      }
+    },
   },
 };
 </script>
