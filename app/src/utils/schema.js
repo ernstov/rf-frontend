@@ -16,3 +16,9 @@ export const assetSchema = yup.object().shape({
 	description: yup.string().required(),
 	claims: yup.string().required(),
 })
+
+export const assetEditSchema = yup.object().shape({
+	status: yup.number().required(),
+	technology_types: yup.array().of(yup.number()).min(1).required(),
+	workflow: yup.array().of(yup.number()).min(1).required(),
+})

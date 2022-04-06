@@ -10,14 +10,14 @@
     :reduce="(i) => i.id"
     v-model="selected"
     :options="options"
-    @onUpdate="$emit('input', selected)"
-    @search="onWorkflowSearch"
+    @input="$emit('input', selected)"
+    @search="onOwnerSearch"
   />
 </template>
 
 <script>
 import { ref } from "@vue/reactivity";
-import { WorkflowRepository } from "../repositories";
+import { OwnerRepository } from "../repositories";
 import { onMounted } from "@vue/runtime-core";
 export default {
   props: {
@@ -41,18 +41,18 @@ export default {
   },
 
   methods: {
-    async onWorkflowSearch(q, loading) {
+    async onOwnerSearch(q, loading) {
       try {
         this.options = [];
         loading(true);
-        const { data: result } = await WorkflowRepository.search(q);
+        const { data: result } = await OwnerRepository.search(q);
         loading(false);
         if (result && result.length) {
           this.options = result;
         }
       } catch (error) {
-        loading(false);
         console.log(error);
+        loading(false);
       }
     },
   },

@@ -8,6 +8,7 @@ import AssetView from '@/views/AssetView.vue'
 import TheProgram from '@/components/TheProgram.vue'
 import TheProject from '@/components/TheProject.vue'
 import AddNewAssets from '@/components/AddNewAssets.vue'
+import EditAssetView from '@/views/EditAssetView.vue'
 import store from '@/store/index.js'
 
 const router = createRouter({
@@ -81,6 +82,14 @@ const router = createRouter({
 			path: '/assets-view/:id',
 			component: AssetView,
 			name: 'Asset-view',
+			meta: {
+				requiresAuth: true,
+			},
+		},
+		{
+			path: '/assets-explorer/edit/:id',
+			component: EditAssetView,
+			name: 'Asset-Edit-View',
 			meta: {
 				requiresAuth: true,
 			},

@@ -8,44 +8,36 @@
     class="search-select"
     close-on-select
     :reduce="(i) => i.id"
-    v-model="selected"
+    :modelValue="modelValue"
     :options="options"
-    @onUpdate="$emit('input', selected)"
-    @search="onWorkflowSearch"
+    v-on:update:modelValue="onUpdate"
+    @search="onSearch"
   />
 </template>
 
 <script>
 import { ref } from "@vue/reactivity";
-import { WorkflowRepository } from "../repositories";
-import { onMounted } from "@vue/runtime-core";
+import { TechnologyRepository } from "../repositories";
 export default {
   props: {
-    value: {
+    modelValue: {
       type: Array,
       default: () => [],
     },
   },
-  setup(props) {
+  setup() {
     const options = ref([]);
-    const selected = ref([]);
-
-    onMounted(() => {
-      selected.value = props.value;
-    });
-
     return {
       options,
-      selected,
     };
   },
 
   methods: {
-    async onWorkflowSearch(q, loading) {
+    async onSearch(q, loading) {
       try {
         this.options = [];
         loading(true);
-        const { data: result } = await WorkflowRepository.search(q);
+        const { data: result } = await TechnologyRepository.search(q);
         loading(false);
         if (result && result.length) {
           this.options = result;
@@ -54,6 +46,10 @@ export default {
         loading(false);
         console.log(error);
       }
+    },
+
+    async onUpdate(v) {
+      this.$emit("update:modelValue", v);
     },
   },
 };

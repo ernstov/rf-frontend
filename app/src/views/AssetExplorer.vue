@@ -56,7 +56,7 @@ import { useRoute, useRouter } from "vue-router";
 import { ref } from "@vue/runtime-core";
 import { AssetRepository } from "../repositories/asset";
 import { useToast } from "vue-toastification";
-const PAGE_SIZE = 20;
+const PAGE_SIZE = 10;
 
 export default {
   components: {

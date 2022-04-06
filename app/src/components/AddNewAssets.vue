@@ -1,11 +1,11 @@
 <template>
   <div class="add-new-asset">
     <div class="px-60 py-32 bg-transparent h-full">
-      <Form>
+      <form @submit.prevent="onSubmit">
         <div class="bg-white p-14 rounded-md">
-          <h2 class="text-6xl mb-12">Add New Assets</h2>
+          <h2 class="text-6xl mb-12">Add New Asset</h2>
           <p class="text-3xl mb-5">Title</p>
-          <Field
+          <input
             class="
               placeholder-gray-500 placeholder-opacity-50
               w-full
@@ -17,7 +17,7 @@
               outline-none
               focus:outline-none
             "
-            v-model="title"
+            v-model="form.title"
             type="text"
             name="title"
           />
@@ -33,7 +33,7 @@
                 close-on-select
                 :options="ownerOptions"
                 @search="onOwnerSearch"
-                v-model="owners"
+                v-model="form.owners"
                 multiple
                 :reduce="(o) => o.id"
                 label="name"
@@ -50,7 +50,7 @@
                 class="search-select"
                 close-on-select
                 :reduce="(i) => i.id"
-                v-model="inventors"
+                v-model="form.inventors"
                 :options="inventorOptions"
                 @search="onInventorSearch"
               />
@@ -66,7 +66,7 @@
                 class="search-select"
                 close-on-select
                 :reduce="(i) => i.id"
-                v-model="technology_types"
+                v-model="form.technology_types"
                 :options="technologyOptions"
                 @search="onTechSearch"
               />
@@ -81,7 +81,7 @@
                 class="search-select"
                 close-on-select
                 :reduce="(i) => i.id"
-                v-model="status"
+                v-model="form.status"
                 :options="statusOptions"
                 @search="onStatusSearch"
               />
@@ -96,7 +96,7 @@
                 class="search-select"
                 close-on-select
                 :reduce="(i) => i.id"
-                v-model="workflow"
+                v-model="form.workflow"
                 :options="workflowOptions"
                 @search="onWorkflowSearch"
               />
@@ -106,7 +106,7 @@
           <div class="grid grid-cols-2 gap-14 mt-14">
             <div>
               <p class="text-3xl mb-5">Patent Numbers</p>
-              <Field
+              <input
                 class="
                   placeholder-gray-500 placeholder-opacity-50
                   w-full
@@ -120,13 +120,13 @@
                 "
                 name="patent_numbers"
                 type="text"
-                v-model="patent_numbers"
+                v-model="form.patent_numbers"
                 placeholder="(comma separated)"
               />
             </div>
             <div>
               <p class="text-3xl mb-5">Cipher family ID</p>
-              <Field
+              <input
                 class="
                   placeholder-gray-500 placeholder-opacity-50
                   w-full
@@ -140,12 +140,12 @@
                 "
                 type="text"
                 name="cipher"
-                v-model="family_id"
+                v-model="form.family_id"
               />
             </div>
             <div>
               <p class="text-3xl mb-5">Publication Date</p>
-              <Field
+              <input
                 class="
                   placeholder-gray-500 placeholder-opacity-50
                   w-full
@@ -159,12 +159,12 @@
                 "
                 type="date"
                 name="publication_date"
-                v-model="publication_date"
+                v-model="form.publication_date"
               />
             </div>
             <div>
               <p class="text-3xl mb-5">Priority Date</p>
-              <Field
+              <input
                 class="
                   placeholder-gray-500 placeholder-opacity-50
                   w-full
@@ -178,12 +178,12 @@
                 "
                 type="date"
                 name="priority_date"
-                v-model="priority_date"
+                v-model="form.priority_date"
               />
             </div>
             <div>
               <p class="text-3xl mb-5">Expiry Date</p>
-              <Field
+              <input
                 class="
                   placeholder-gray-500 placeholder-opacity-50
                   w-full
@@ -197,12 +197,12 @@
                 "
                 type="date"
                 name="expiry_date"
-                v-model="expiry_date"
+                v-model="form.expiry_date"
               />
             </div>
           </div>
           <p class="text-3xl mb-5 mt-14">Abstract</p>
-          <Field
+          <textarea
             name="abstract"
             cols="30"
             rows="10"
@@ -219,14 +219,14 @@
               focus:outline-none
             "
             as="textarea"
-            v-model="abstract"
-          />
+            v-model="form.abstract"
+          ></textarea>
           <p class="text-3xl mb-5 mt-14">Description</p>
-          <Field
+          <textarea
             name="description"
             cols="30"
             rows="10"
-            v-model="description"
+            v-model="form.description"
             class="
               placeholder-gray-500 placeholder-opacity-50
               w-full
@@ -240,9 +240,9 @@
               focus:outline-none
             "
             as="textarea"
-          />
+          ></textarea>
           <p class="text-3xl mb-5 mt-14">Claims</p>
-          <Field
+          <textarea
             name="claims"
             cols="30"
             rows="10"
@@ -259,27 +259,12 @@
               focus:outline-none
             "
             as="textarea"
-            v-model="claims"
-          />
+            v-model="form.claims"
+          ></textarea>
           <div class="flex mt-14">
-            <button
-              class="
-                bg-green-600
-                text-white
-                py-4
-                rounded-md
-                text-3xl
-                font-medium
-                hover:bg-green-700
-                transition
-                duration-300
-                mr-20
-                w-80
-              "
-              @click.prevent="onSubmit"
+            <BaseButton class="bg-green-600 mr-12 w-80" :loading="loading">
+              Submit</BaseButton
             >
-              Add
-            </button>
             <div />
             <button
               class="
@@ -294,17 +279,18 @@
                 duration-300
                 w-80
               "
+              @click.prevent="$router.push(`/assets-explorer`)"
             >
               Cancel
             </button>
           </div>
         </div>
-      </Form>
+      </form>
     </div>
   </div>
 </template>
 <script>
-import { Form, Field } from "vee-validate";
+import BaseButton from "@/components/BaseComponents/BaseButton.vue";
 import { useToast } from "vue-toastification";
 import {
   InventorRepository,
@@ -317,12 +303,12 @@ import { AssetRepository } from "../repositories/asset";
 import { assetSchema } from "../utils";
 export default {
   components: {
-    Form,
-    Field,
+    BaseButton,
     // Modal,
   },
   setup() {
     const toast = useToast();
+
     return {
       toast,
     };
@@ -334,22 +320,26 @@ export default {
       technologyOptions: [],
       statusOptions: [],
       workflowOptions: [],
-      title: "",
-      owners: [],
-      inventors: [],
-      patent_numbers: "",
-      family_id: "",
-      publication_date: "",
-      priority_date: "",
-      expiry_date: "",
-      technology_types: [],
-      status: [],
-      workflow: [],
-      abstract: "",
-      description: "",
-      claims: "",
+      form: {
+        title: "",
+        owners: [],
+        inventors: [],
+        patent_numbers: "",
+        family_id: "",
+        publication_date: "",
+        priority_date: "",
+        expiry_date: "",
+        technology_types: [],
+        status: [],
+        workflow: [],
+        abstract: "",
+        description: "",
+        claims: "",
+      },
+      loading: false,
     };
   },
+  mounted() {},
   methods: {
     async onOwnerSearch(q, loading) {
       try {
@@ -426,25 +416,12 @@ export default {
     },
 
     async onSubmit() {
-      const payload = {
-        title: this.title,
-        owners: this.owners,
-        inventors: this.inventors,
-        patent_numbers: this.patent_numbers.split(","),
-        family_id: this.family_id,
-        publication_date: this.publication_date,
-        priority_date: this.priority_date,
-        expiry_date: this.expiry_date,
-        technology_types: this.technology_types,
-        status: this.status,
-        workflow: this.workflow,
-        abstract: this.abstract,
-        description: this.description,
-        claims: this.claims,
-      };
+      const payload = this.form;
+      payload.patent_numbers = this.form?.patent_numbers?.split(",") || [];
       try {
         await assetSchema.validate(payload);
       } catch (error) {
+        this.loading = false;
         console.log(error);
         this.toast.error(error.message);
         return;
@@ -452,14 +429,17 @@ export default {
 
       // save asset
       try {
+        this.loading = true;
         await AssetRepository.create(payload);
         this.toast.success("Asset Created");
+        this.loading = false;
+
+        this.$router.push("/assets-explorer");
       } catch (error) {
+        this.loading = false;
+
         this.toast.error(error.message);
       }
-    },
-    onInvalidSubmit(event) {
-      console.log(event);
     },
   },
 };

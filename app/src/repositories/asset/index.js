@@ -21,4 +21,8 @@ export const AssetRepository = {
 	async findById(id) {
 		return await ApiService.get(`asset/${id}`)
 	},
+
+	async update(id, payload) {
+		return await ApiService.put(`asset/${id}/`, payload)
+	},
 }

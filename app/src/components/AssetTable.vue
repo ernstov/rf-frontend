@@ -1,10 +1,12 @@
 <template>
   <div id="asset-table">
-    <div class="flex flex-col mt-8 bg-white sm:rounded-lg">
-      <div class="overflow-x-auto sm:-mx-6 lg:-mx-8">
+    <div
+      class="flex flex-col mt-8 bg-white sm:rounded-lg w-full overflow-hidden"
+    >
+      <div class="overflow-x-auto px-4 max-w-full">
         <div class="inline-block min-w-full sm:px-6 lg:px-8">
           <div class="overflow-hidden rounded-t-2xl">
-            <table class="min-w-full px-2">
+            <table class="min-w-full px-2 table-fixed">
               <thead class="bg-gray-50 dark:bg-gray-700">
                 <tr>
                   <th
@@ -116,58 +118,26 @@
                   "
                 >
                   <td
-                    class="
-                      py-5
-                      px-10
-                      text-2xl text-gray-500
-                      whitespace-nowrap
-                      dark:text-gray-400
-                    "
+                    class="py-5 px-10 text-2xl text-gray-500 dark:text-gray-400"
                   >
                     {{ family.family_id }}
                   </td>
                   <td
-                    class="
-                      py-5
-                      px-6
-                      text-2xl text-gray-500
-                      whitespace-nowrap
-                      dark:text-gray-400
-                    "
+                    class="py-5 px-6 text-2xl text-gray-500 dark:text-gray-400"
                   >
                     {{ family?.patent_numbers?.toString() }}
                   </td>
                   <td
-                    class="
-                      py-5
-                      px-6
-                      text-2xl text-gray-500
-                      whitespace-nowrap
-                      dark:text-gray-400
-                    "
+                    class="py-5 px-6 text-2xl text-gray-500 dark:text-gray-400"
                   >
                     {{ family?.inventors?.map((i) => i.name)?.toString() }}
                   </td>
                   <td
-                    class="
-                      py-5
-                      px-6
-                      text-2xl text-gray-500
-                      whitespace-nowrap
-                      dark:text-gray-400
-                    "
+                    class="py-5 px-6 text-2xl text-gray-500 dark:text-gray-400"
                   >
                     {{ family?.workflow?.map((w) => w.name)?.toString() }}
                   </td>
-                  <td
-                    class="
-                      py-5
-                      px-6
-                      text-2xl text-gray-500
-                      whitespace-nowrap
-                      h-2
-                    "
-                  >
+                  <td class="py-5 px-6 text-2xl text-gray-500 h-2">
                     <p
                       class="dark:text-gray-400 p-3 w-40"
                       :class="{
@@ -179,28 +149,12 @@
                     </p>
                   </td>
                   <td
-                    class="
-                      py-5
-                      px-6
-                      text-2xl text-gray-500
-                      whitespace-nowrap
-                      dark:text-gray-400
-                    "
+                    class="py-5 px-6 text-2xl text-gray-500 dark:text-gray-400"
                   >
                     {{ family.publication_date }}
                   </td>
-                  <td
-                    class="
-                      py-5
-                      px-6
-                      text-2xl
-                      font-medium
-                      text-right
-                      whitespace-nowrap
-                    "
-                  >
-                    <a
-                      href="#"
+                  <td class="py-5 px-6 text-2xl font-medium text-right">
+                    <router-link
                       class="
                         text-black-600
                         dark:text-black-500
@@ -210,21 +164,11 @@
                         bg-gray-300
                         p-3
                       "
-                      @click="shoeEditAssetModal = true"
-                      >Edit</a
+                      :to="`/assets-explorer/edit/${family.uuid}`"
+                      >Edit</router-link
                     >
                   </td>
-                  <td
-                    class="
-                      py-5
-                      px-6
-                      text-2xl
-                      font-medium
-                      text-right
-                      whitespace-nowrap
-                      pr-10
-                    "
-                  >
+                  <td class="py-5 px-6 text-2xl font-medium text-right pr-10">
                     <router-link
                       class="
                         text-black-600
@@ -262,4 +206,20 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+#asset-table {
+  table {
+    tr {
+      td {
+        max-width: 300px;
+        min-width: 100px;
+        word-break: break-all;
+        white-space: pre-line;
+        padding: 8px;
+      }
+      th {
+        padding-left: 8px;
+      }
+    }
+  }
+}
 </style>

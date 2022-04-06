@@ -77,32 +77,13 @@
             </div>
           </form>
         </div>
-        <div class="py-3 flex justify-end items-end mt-8">
-          <button
-            type="button"
-            class="
-              w-30
-              inline-flex
-              justify-center
-              rounded-md
-              border border-transparent
-              shadow-sm
-              px-16
-              py-4
-              bg-red-600
-              font-medium
-              text-white
-              hover:bg-red-700
-              focus:outline-none
-              sm:w-auto
-              text-3xl
-              bg-green-600
-              hover:bg-green-700
-            "
+        <div class="py-3 flex justify-end mt-8">
+          <BaseButton
+            class="bg-green-600 w-60"
             @click="submit"
+            :loading="loading"
+            >Save</BaseButton
           >
-            Save
-          </button>
           <button
             type="button"
             class="
@@ -137,20 +118,24 @@ import WorkflowSelect from "@/components/WorkflowSelect.vue";
 import { ref } from "@vue/reactivity";
 import { AssetRepository } from "../../repositories/asset";
 import { useToast } from "vue-toastification";
+import BaseButton from "../BaseComponents/BaseButton.vue";
 
 export default {
   setup() {
     const selectedWorkflows = ref([]);
+    const loading = ref(false);
     const file = ref(null);
     const toast = useToast();
     return {
       file,
       selectedWorkflows,
       toast,
+      loading,
     };
   },
   components: {
     WorkflowSelect,
+    BaseButton,
   },
   methods: {
     async handleFile() {
@@ -163,10 +148,12 @@ export default {
       });
       fd.append("file", this.file);
       try {
+        this.loading = true;
         await AssetRepository.createWithCSV(fd);
         this.toast.success("Bulk upload success.");
         this.$emit("close-modal");
       } catch (error) {
+        this.loading = false;
         this.toast.error(error.message);
         console.log(error);
       }

@@ -11,13 +11,13 @@
     v-model="selected"
     :options="options"
     @onUpdate="$emit('input', selected)"
-    @search="onWorkflowSearch"
+    @search="onInventorSearch"
   />
 </template>
 
 <script>
 import { ref } from "@vue/reactivity";
-import { WorkflowRepository } from "../repositories";
+import { InventorRepository } from "../repositories";
 import { onMounted } from "@vue/runtime-core";
 export default {
   props: {
@@ -41,11 +41,11 @@ export default {
   },
 
   methods: {
-    async onWorkflowSearch(q, loading) {
+    async onInventorSearch(q, loading) {
       try {
         this.options = [];
         loading(true);
-        const { data: result } = await WorkflowRepository.search(q);
+        const { data: result } = await InventorRepository.search(q);
         loading(false);
         if (result && result.length) {
           this.options = result;

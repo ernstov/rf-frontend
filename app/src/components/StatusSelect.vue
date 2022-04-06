@@ -3,21 +3,20 @@
     searchable
     clearable
     name="workflows"
-    multiple
     label="name"
     class="search-select"
     close-on-select
     :reduce="(i) => i.id"
     v-model="selected"
-    :options="options"
     @onUpdate="$emit('input', selected)"
-    @search="onWorkflowSearch"
+    :options="options"
+    @search="onSearch"
   />
 </template>
 
 <script>
 import { ref } from "@vue/reactivity";
-import { WorkflowRepository } from "../repositories";
+import { StatusRepository } from "../repositories";
 import { onMounted } from "@vue/runtime-core";
 export default {
   props: {
@@ -41,11 +40,11 @@ export default {
   },
 
   methods: {
-    async onWorkflowSearch(q, loading) {
+    async onSearch(q, loading) {
       try {
         this.options = [];
         loading(true);
-        const { data: result } = await WorkflowRepository.search(q);
+        const { data: result } = await StatusRepository.search(q);
         loading(false);
         if (result && result.length) {
           this.options = result;

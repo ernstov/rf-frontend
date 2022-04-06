@@ -54,8 +54,8 @@ const ApiService = {
 	post(resource, data, options) {
 		return axios.post(axios.defaults.baseURL + resource, data, options || {})
 	},
-	put(data) {
-		return axios.put(data)
+	put(path, payload) {
+		return axios.put(path, payload)
 	},
 	delete(data) {
 		axios.delete(data)
