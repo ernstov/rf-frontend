@@ -51,6 +51,9 @@
               <div>
                 <p class="text-3xl mb-5">CSV File</p>
                 <input
+                  type="file"
+                  ref="upload"
+                  accept=".csv"
                   class="
                     placeholder-gray-500 placeholder-opacity-50
                     w-full
@@ -58,43 +61,29 @@
                     text-2xl
                     px-5
                     border border-gray-300
+                    pt-2
                     rounded-md
                     outline-none
                     focus:outline-none
                   "
+                  @change="handleFile"
                 />
               </div>
               <div>
-                <base-dropdown class="w-full"></base-dropdown>
+                <p class="text-3xl mb-5">Select Workflow</p>
+
+                <WorkflowSelect v-model="selectedWorkflows" />
               </div>
             </div>
           </form>
         </div>
-        <div class="py-3 flex justify-end items-end mt-8">
-          <button
-            type="button"
-            class="
-              w-30
-              inline-flex
-              justify-center
-              rounded-md
-              border border-transparent
-              shadow-sm
-              px-16
-              py-4
-              bg-red-600
-              font-medium
-              text-white
-              hover:bg-red-700
-              focus:outline-none
-              sm:w-auto
-              text-3xl
-              bg-green-600
-              hover:bg-green-700
-            "
+        <div class="py-3 flex justify-end mt-8">
+          <BaseButton
+            class="bg-green-600 w-60"
+            @click="submit"
+            :loading="loading"
+            >Save</BaseButton
           >
-            Save
-          </button>
           <button
             type="button"
             class="
@@ -125,11 +114,50 @@
   </div>
 </template>
 <script>
-import BaseDropdown from "@/components/BaseComponents/BaseDropdown.vue";
+import WorkflowSelect from "@/components/WorkflowSelect.vue";
+import { ref } from "@vue/reactivity";
+import { AssetRepository } from "../../repositories/asset";
+import { useToast } from "vue-toastification";
+import BaseButton from "../BaseComponents/BaseButton.vue";
 
 export default {
+  setup() {
+    const selectedWorkflows = ref([]);
+    const loading = ref(false);
+    const file = ref(null);
+    const toast = useToast();
+    return {
+      file,
+      selectedWorkflows,
+      toast,
+      loading,
+    };
+  },
   components: {
-    BaseDropdown,
+    WorkflowSelect,
+    BaseButton,
+  },
+  methods: {
+    async handleFile() {
+      this.file = this.$refs.upload.files[0];
+    },
+    async submit() {
+      const fd = new FormData();
+      this.selectedWorkflows.forEach((id) => {
+        fd.append("workflows", id);
+      });
+      fd.append("file", this.file);
+      try {
+        this.loading = true;
+        await AssetRepository.createWithCSV(fd);
+        this.toast.success("Bulk upload success.");
+        this.$emit("close-modal");
+      } catch (error) {
+        this.loading = false;
+        this.toast.error(error.message);
+        console.log(error);
+      }
+    },
   },
 };
 </script>
