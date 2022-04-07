@@ -1,10 +1,28 @@
 <template>
-  <div class="text-4xl font-sans h-60 rounded-2xl py-8 px-8 bg-white">{{name}}</div>
+  <div
+    id="base-card"
+    class="
+      text-4xl
+      font-sans
+      rounded-2xl
+      py-8
+      px-8
+      bg-white
+      border-box
+      mr-12
+      mb-12
+    "
+  >
+    <slot></slot>
+  </div>
 </template>
 <script>
-export default {
-  props: {
-    name: String
-  }
-}
+export default {};
 </script>
+<style lang="scss" scoped>
+#base-card {
+  position: relative;
+  width: 280px;
+  height: 220px;
+}
+</style>

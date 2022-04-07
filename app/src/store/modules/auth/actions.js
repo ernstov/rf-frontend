@@ -9,14 +9,14 @@ export default {
 			password: payload.password,
 			confirm_password: payload.confirm_password,
 		}
-		await ApiService.post('auth/users/', requestObject)
+		await ApiService.post('/auth/users/', requestObject)
 	},
 	async login(context, payload) {
 		const requestObject = {
 			email: payload.email,
 			password: payload.password,
 		}
-		await ApiService.post('auth/jwt/create/', requestObject).then(function (
+		await ApiService.post('/auth/jwt/create/', requestObject).then(function (
 			response
 		) {
 			const tokens = response.data
@@ -31,7 +31,7 @@ export default {
 		const requestObject = {
 			access_token: payload.token.access_token,
 		}
-		await ApiService.post('auth/google/', requestObject)
+		await ApiService.post('/auth/google/', requestObject)
 			.then((response) => {
 				const tokens = response.data
 				StorageService.saveData('access', tokens.access)
@@ -53,6 +53,6 @@ export default {
 		const requestObject = {
 			email: payload.email,
 		}
-		await ApiService.post('auth/users/reset_password/', requestObject)
+		await ApiService.post('/auth/users/reset_password/', requestObject)
 	},
 }

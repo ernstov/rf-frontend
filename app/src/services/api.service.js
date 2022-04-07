@@ -52,13 +52,13 @@ const ApiService = {
 		return axios.get(path, options || {})
 	},
 	post(resource, data, options) {
-		return axios.post(axios.defaults.baseURL + resource, data, options || {})
+		return axios.post(resource, data, options || {})
 	},
 	put(path, payload) {
 		return axios.put(path, payload)
 	},
-	delete(data) {
-		axios.delete(data)
+	delete(path) {
+		axios.delete(path)
 	},
 	setAuthHeaders() {
 		const token = StorageService.getToken()

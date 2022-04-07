@@ -45,7 +45,7 @@
         "
       >
         <div class="header flex justify-between">
-          <h2 class="text-5xl mb-8">Add New Program</h2>
+          <h2 class="text-5xl mb-8">Edit Program</h2>
           <span class="icon cursor-pointer" @click="$emit('close-modal')">
             <svg
               version="1.1"
@@ -109,13 +109,26 @@
               required
               v-model="form.description"
             ></textarea>
+          </form>
+          <p v-if="deleteConfirm" class="text-3xl text-center mt-8">
+            Are you sure you want to delete?
+          </p>
+          <div class="flex items-center justify-end">
+            <BaseButton
+              :loading="deleteLoading"
+              @click="deleteProgram"
+              class="bg-red-700 w-80 py-8 mt-8 mr-8"
+            >
+              {{ deleteConfirm ? "Confirm Delete" : "Delete" }}
+            </BaseButton>
             <BaseButton
               :loading="loading"
-              class="bg-green-600 w-80 py-8 mt-8 float-right"
+              class="bg-green-600 w-80 py-8 mt-8"
+              @click="onSubmit"
             >
               Submit
             </BaseButton>
-          </form>
+          </div>
         </div>
       </div>
     </div>
@@ -128,6 +141,13 @@ import { WorkflowRepository } from "../../repositories";
 import BaseButton from "../BaseComponents/BaseButton.vue";
 
 export default {
+  props: {
+    value: {
+      type: Object,
+      default: () => {},
+      required: true,
+    },
+  },
   setup() {
     const toast = useToast();
     return {
@@ -142,7 +162,13 @@ export default {
         type: "program",
       },
       loading: false,
+      deleteLoading: false,
+      deleteConfirm: false,
     };
+  },
+  mounted() {
+    const { name, description, type } = this.value;
+    this.form = { name, description, type };
   },
   methods: {
     async onSubmit() {
@@ -154,12 +180,29 @@ export default {
       }
       try {
         this.loading = true;
-        await WorkflowRepository.create(this.form);
+        await WorkflowRepository.update(this.value.id, this.form);
         this.loading = false;
-        this.toast.success("Program Created");
+        this.toast.success("Program Updated");
         this.$emit("close-modal");
       } catch (error) {
         this.loading = false;
+        console.log(error);
+      }
+    },
+
+    async deleteProgram() {
+      if (!this.deleteConfirm) {
+        this.deleteConfirm = true;
+        return;
+      }
+      try {
+        this.deleteLoading = true;
+        await WorkflowRepository.delete(this.value.id);
+        this.deleteLoading = false;
+        this.toast.success("Program Deleted");
+        this.$emit("close-modal");
+      } catch (error) {
+        this.deleteLoading = false;
         console.log(error);
       }
     },

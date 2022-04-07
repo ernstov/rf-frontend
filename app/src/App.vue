@@ -1,32 +1,34 @@
 <template>
   <div class="app">
-    <the-navbar  v-if="showNavbar"></the-navbar>
-    <router-view ></router-view>
+    <the-navbar v-if="showNavbar"></the-navbar>
+    <router-view></router-view>
   </div>
 </template>
 
 <script>
 import TheNavbar from "@/components/layout/TheNavbar.vue";
 export default {
-  components:{
+  components: {
     TheNavbar,
   },
-  data(){
+  data() {
     return {
-       showNavbar: true
-    }
+      showNavbar: true,
+    };
   },
-  watch:{
-    $route (){
+  watch: {
+    $route() {
       this.showNavbar = this.$route.meta.requiresAuth;
-    }
-  } ,
+    },
+  },
 };
 </script>
 
 <style lang="scss" scoped>
 .app {
-  height: 100%;
+  width: 100%;
+  position: relative;
   background-color: #e5e5e5;
+  min-height: 100vh;
 }
 </style>
