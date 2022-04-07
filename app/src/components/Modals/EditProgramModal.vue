@@ -1,0 +1,212 @@
+<template>
+  <div
+    class="fixed z-10 inset-0 overflow-y-auto"
+    aria-labelledby="modal-title"
+    role="dialog"
+    aria-modal="true"
+  >
+    <div
+      class="
+        flex
+        items-end
+        justify-center
+        min-h-screen
+        pt-4
+        px-4
+        pb-20
+        text-center
+        sm:block sm:p-0
+      "
+    >
+      <div
+        class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
+        aria-hidden="true"
+      ></div>
+
+      <span
+        class="hidden sm:inline-block sm:align-middle sm:h-screen"
+        aria-hidden="true"
+        >&#8203;</span
+      >
+      <div
+        class="
+          relative
+          inline-block
+          align-bottom
+          bg-white
+          rounded-lg
+          text-left
+          overflow-hidden
+          shadow-xl
+          transform
+          transition-all
+          sm:my-8 sm:align-middle sm:max-w-5xl sm:w-full
+          p-12
+        "
+      >
+        <div class="header flex justify-between">
+          <h2 class="text-5xl mb-8">Edit Program</h2>
+          <span class="icon cursor-pointer" @click="$emit('close-modal')">
+            <svg
+              version="1.1"
+              id="Capa_1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              x="0px"
+              y="0px"
+              width="20px"
+              height="20px"
+              viewBox="0 0 94.926 94.926"
+              style="enable-background: new 0 0 94.926 94.926"
+              xml:space="preserve"
+            >
+              <path
+                d="M55.931,47.463L94.306,9.09c0.826-0.827,0.826-2.167,0-2.994L88.833,0.62C88.436,0.224,87.896,0,87.335,0
+              c-0.562,0-1.101,0.224-1.498,0.62L47.463,38.994L9.089,0.62c-0.795-0.795-2.202-0.794-2.995,0L0.622,6.096
+              c-0.827,0.827-0.827,2.167,0,2.994l38.374,38.373L0.622,85.836c-0.827,0.827-0.827,2.167,0,2.994l5.473,5.476
+              c0.397,0.396,0.936,0.62,1.498,0.62s1.1-0.224,1.497-0.62l38.374-38.374l38.374,38.374c0.397,0.396,0.937,0.62,1.498,0.62
+              s1.101-0.224,1.498-0.62l5.473-5.476c0.826-0.827,0.826-2.167,0-2.994L55.931,47.463z"
+              />
+            </svg>
+          </span>
+        </div>
+        <div class="bg-white">
+          <form @submit.prevent="onSubmit">
+            <p class="text-3xl mb-5">Name</p>
+            <input
+              class="
+                placeholder-gray-500 placeholder-opacity-50
+                w-full
+                h-16
+                text-2xl
+                px-5
+                border border-gray-300
+                rounded-md
+                outline-none
+                focus:outline-none
+              "
+              required
+              v-model="form.name"
+            />
+            <p class="text-3xl mb-5 mt-14">Description</p>
+            <textarea
+              name=""
+              id=""
+              cols="30"
+              rows="10"
+              class="
+                placeholder-gray-500 placeholder-opacity-50
+                w-full
+                h-60
+                text-2xl
+                px-5
+                py-5
+                border border-gray-300
+                rounded-md
+                outline-none
+                focus:outline-none
+              "
+              required
+              v-model="form.description"
+            ></textarea>
+          </form>
+          <p v-if="deleteConfirm" class="text-3xl text-center mt-8">
+            Are you sure you want to delete?
+          </p>
+          <div class="flex items-center justify-end">
+            <BaseButton
+              :loading="deleteLoading"
+              @click="deleteProgram"
+              class="bg-red-700 w-80 py-8 mt-8 mr-8"
+            >
+              {{ deleteConfirm ? "Confirm Delete" : "Delete" }}
+            </BaseButton>
+            <BaseButton
+              :loading="loading"
+              class="bg-green-600 w-80 py-8 mt-8"
+              @click="onSubmit"
+            >
+              Submit
+            </BaseButton>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import { programCreateSchema } from "../../utils";
+import { useToast } from "vue-toastification";
+import { WorkflowRepository } from "../../repositories";
+import BaseButton from "../BaseComponents/BaseButton.vue";
+
+export default {
+  props: {
+    value: {
+      type: Object,
+      default: () => {},
+      required: true,
+    },
+  },
+  setup() {
+    const toast = useToast();
+    return {
+      toast,
+    };
+  },
+  data() {
+    return {
+      form: {
+        name: "",
+        description: "",
+        type: "program",
+      },
+      loading: false,
+      deleteLoading: false,
+      deleteConfirm: false,
+    };
+  },
+  mounted() {
+    const { name, description, type } = this.value;
+    this.form = { name, description, type };
+  },
+  methods: {
+    async onSubmit() {
+      try {
+        await programCreateSchema.validate(this.form);
+      } catch (error) {
+        this.toast.error(error.message);
+        return;
+      }
+      try {
+        this.loading = true;
+        await WorkflowRepository.update(this.value.id, this.form);
+        this.loading = false;
+        this.toast.success("Program Updated");
+        this.$emit("close-modal");
+      } catch (error) {
+        this.loading = false;
+        console.log(error);
+      }
+    },
+
+    async deleteProgram() {
+      if (!this.deleteConfirm) {
+        this.deleteConfirm = true;
+        return;
+      }
+      try {
+        this.deleteLoading = true;
+        await WorkflowRepository.delete(this.value.id);
+        this.deleteLoading = false;
+        this.toast.success("Program Deleted");
+        this.$emit("close-modal");
+      } catch (error) {
+        this.deleteLoading = false;
+        console.log(error);
+      }
+    },
+  },
+  components: { BaseButton },
+};
+</script>

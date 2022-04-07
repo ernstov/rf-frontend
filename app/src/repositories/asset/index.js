@@ -2,7 +2,7 @@ import ApiService from '../../services/api.service'
 
 export const AssetRepository = {
 	async create(payload) {
-		return await ApiService.post('asset/', payload)
+		return await ApiService.post('/asset/', payload)
 	},
 
 	async find(query) {
@@ -11,7 +11,7 @@ export const AssetRepository = {
 	},
 
 	async createWithCSV(payload) {
-		return await ApiService.post('bulk-upload/', payload, {
+		return await ApiService.post('/bulk-upload/', payload, {
 			headers: {
 				'Content-Type': 'multipart/form-data',
 			},

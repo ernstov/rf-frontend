@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="px-60 py-32 h-screen">
+    <div class="px-60 py-32">
       <!-- <the-dashboard></the-dashboard> -->
       <h4
         class="text-4xl w-full text-center text-gray-500"
@@ -10,7 +10,7 @@
       </h4>
 
       <div class="flex flex-wrap">
-        <base-card v-for="program in programs" :key="program.id">
+        <base-card v-for="program in programs" :key="program.id" class="card">
           <p class="text-xl text-green-600">Name</p>
           <h4 class="font-semibold">{{ program.name }}</h4>
           <p class="text-xl text-green-600 mt-6">Description</p>
@@ -25,6 +25,25 @@
           >
             {{ program.description }}
           </p>
+          <div
+            class="absolute right-3 top-3 hidden edit"
+            @click="programToEdit = program"
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="h-12 w-12 p-2 text-green-600"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+              />
+            </svg>
+          </div>
         </base-card>
         <div class="h-60 rounded-2xl flex items-center justify-center">
           <button
@@ -62,6 +81,14 @@
             showAddNewProgramModal = false;
           "
         ></add-new-program-modal>
+        <edit-program-modal
+          v-if="programToEdit"
+          :value="programToEdit"
+          @close-modal="
+            refreshPrograms();
+            programToEdit = false;
+          "
+        />
       </div>
     </div>
   </div>
@@ -71,11 +98,13 @@ import BaseCard from "@/components/BaseComponents/BaseCard.vue";
 import AddNewProgramModal from "@/components/Modals/AddNewProgramModal.vue";
 import { WorkflowRepository } from "../repositories";
 import { useToast } from "vue-toastification";
+import EditProgramModal from "./Modals/EditProgramModal.vue";
 
 export default {
   components: {
     BaseCard,
     AddNewProgramModal,
+    EditProgramModal,
   },
   setup() {
     const toast = useToast();
@@ -88,6 +117,7 @@ export default {
       showAddNewProgramModal: false,
       programs: [],
       loading: true,
+      programToEdit: false,
     };
   },
   mounted() {
@@ -107,4 +137,12 @@ export default {
 };
 </script>
 <style lang="scss" scoped>
+.card {
+  &:hover {
+    .edit {
+      display: block;
+      cursor: pointer;
+    }
+  }
+}
 </style>
