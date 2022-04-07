@@ -15,6 +15,12 @@ export const WorkflowRepository = {
 		})
 	},
 
+	async getProjects() {
+		return await ApiService.get('/workflow/', {
+			params: { type: 'project', search: '' },
+		})
+	},
+
 	async update(id, payload) {
 		return await ApiService.put(`/workflow/${id}/`, payload)
 	},
