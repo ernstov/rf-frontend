@@ -22,3 +22,9 @@ export const assetEditSchema = yup.object().shape({
 	technology_types: yup.array().of(yup.number()).min(1).required(),
 	workflow: yup.array().of(yup.number()).min(1).required(),
 })
+
+export const programCreateSchema = yup.object().shape({
+	name: yup.string().required(),
+	description: yup.string().required(),
+	type: yup.string().required(),
+})

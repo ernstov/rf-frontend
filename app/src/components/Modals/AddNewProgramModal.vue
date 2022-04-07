@@ -44,22 +44,34 @@
           p-12
         "
       >
-      <div class="header flex justify-between">
-        <h2 class="text-5xl mb-8">Add New Program</h2>
-        <span class="icon cursor-pointer" @click="$emit('close-modal')">
-          <svg version="1.1" id="Capa_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
-            width="20px" height="20px" viewBox="0 0 94.926 94.926" style="enable-background:new 0 0 94.926 94.926;"
-            xml:space="preserve">
-            <path d="M55.931,47.463L94.306,9.09c0.826-0.827,0.826-2.167,0-2.994L88.833,0.62C88.436,0.224,87.896,0,87.335,0
+        <div class="header flex justify-between">
+          <h2 class="text-5xl mb-8">Add New Program</h2>
+          <span class="icon cursor-pointer" @click="$emit('close-modal')">
+            <svg
+              version="1.1"
+              id="Capa_1"
+              xmlns="http://www.w3.org/2000/svg"
+              xmlns:xlink="http://www.w3.org/1999/xlink"
+              x="0px"
+              y="0px"
+              width="20px"
+              height="20px"
+              viewBox="0 0 94.926 94.926"
+              style="enable-background: new 0 0 94.926 94.926"
+              xml:space="preserve"
+            >
+              <path
+                d="M55.931,47.463L94.306,9.09c0.826-0.827,0.826-2.167,0-2.994L88.833,0.62C88.436,0.224,87.896,0,87.335,0
               c-0.562,0-1.101,0.224-1.498,0.62L47.463,38.994L9.089,0.62c-0.795-0.795-2.202-0.794-2.995,0L0.622,6.096
               c-0.827,0.827-0.827,2.167,0,2.994l38.374,38.373L0.622,85.836c-0.827,0.827-0.827,2.167,0,2.994l5.473,5.476
               c0.397,0.396,0.936,0.62,1.498,0.62s1.1-0.224,1.497-0.62l38.374-38.374l38.374,38.374c0.397,0.396,0.937,0.62,1.498,0.62
-              s1.101-0.224,1.498-0.62l5.473-5.476c0.826-0.827,0.826-2.167,0-2.994L55.931,47.463z"/>
-          </svg>
-        </span>
-      </div>
+              s1.101-0.224,1.498-0.62l5.473-5.476c0.826-0.827,0.826-2.167,0-2.994L55.931,47.463z"
+              />
+            </svg>
+          </span>
+        </div>
         <div class="bg-white">
-          <form action="">
+          <form @submit.prevent="onSubmit">
             <p class="text-3xl mb-5">Name</p>
             <input
               class="
@@ -74,7 +86,7 @@
                 focus:outline-none
               "
               required
-              v-model="name"
+              v-model="form.name"
             />
             <p class="text-3xl mb-5 mt-14">Description</p>
             <textarea
@@ -95,48 +107,63 @@
                 focus:outline-none
               "
               required
-              v-model="description"
+              v-model="form.description"
             ></textarea>
+            <BaseButton
+              :loading="loading"
+              class="bg-green-600 w-80 py-8 mt-8 float-right"
+            >
+              Submit
+            </BaseButton>
           </form>
-        </div>
-        <div class="py-3 sm:flex sm:flex-row-reverse mt-5">
-          <button
-          @click="$emit('close-modal')"
-            type="button"
-            class="
-              w-full
-              inline-flex
-              justify-center
-              rounded-md
-              border border-transparent
-              shadow-sm
-              px-16
-              py-4
-              bg-red-600
-              font-medium
-              text-white
-              hover:bg-red-700
-              focus:outline-none
-              sm:ml-3 sm:w-auto
-              text-3xl
-              bg-green-600
-              hover:bg-green-700
-            "
-          >
-            Add
-          </button>
         </div>
       </div>
     </div>
   </div>
 </template>
 <script>
+import { programCreateSchema } from "../../utils";
+import { useToast } from "vue-toastification";
+import { WorkflowRepository } from "../../repositories";
+import BaseButton from "../BaseComponents/BaseButton.vue";
+
 export default {
-  data(){
+  setup() {
+    const toast = useToast();
     return {
-      name: "",
-      description: ""
-    }
-  }
-}
+      toast,
+    };
+  },
+  data() {
+    return {
+      form: {
+        name: "",
+        description: "",
+        type: "program",
+      },
+      loading: false,
+    };
+  },
+  methods: {
+    async onSubmit() {
+      try {
+        await programCreateSchema.validate(this.form);
+      } catch (error) {
+        this.toast.error(error.message);
+        return;
+      }
+      try {
+        this.loading = true;
+        await WorkflowRepository.create(this.form);
+        this.loading = false;
+        this.toast.success("Program Created");
+        this.$emit("close-modal");
+      } catch (error) {
+        this.loading = false;
+        console.log(error);
+      }
+    },
+  },
+  components: { BaseButton },
+};
 </script>
