@@ -110,17 +110,8 @@
               v-model="form.description"
             ></textarea>
           </form>
-          <p v-if="deleteConfirm" class="text-3xl text-center mt-8">
-            Are you sure you want to delete?
-          </p>
+
           <div class="flex items-center justify-end">
-            <BaseButton
-              :loading="deleteLoading"
-              @click="deleteProgram"
-              class="bg-red-700 w-80 py-8 mt-8 mr-8"
-            >
-              {{ deleteConfirm ? "Confirm Delete" : "Delete" }}
-            </BaseButton>
             <BaseButton
               :loading="loading"
               class="bg-green-600 w-80 py-8 mt-8"
@@ -162,8 +153,6 @@ export default {
         type: "project",
       },
       loading: false,
-      deleteLoading: false,
-      deleteConfirm: false,
     };
   },
   mounted() {
@@ -186,23 +175,6 @@ export default {
         this.$emit("close-modal");
       } catch (error) {
         this.loading = false;
-        console.log(error);
-      }
-    },
-
-    async deleteProgram() {
-      if (!this.deleteConfirm) {
-        this.deleteConfirm = true;
-        return;
-      }
-      try {
-        this.deleteLoading = true;
-        await WorkflowRepository.delete(this.value.id);
-        this.deleteLoading = false;
-        this.toast.success("Project Deleted");
-        this.$emit("close-modal");
-      } catch (error) {
-        this.deleteLoading = false;
         console.log(error);
       }
     },

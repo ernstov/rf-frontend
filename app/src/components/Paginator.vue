@@ -162,7 +162,7 @@ export default {
 li {
   margin: 0 6px;
   background: #f5f5f5;
-  padding: 2px 6px;
-  font-size: 12px;
+  padding: 4px 8px;
+  font-size: 14px;
 }
 </style>

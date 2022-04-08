@@ -23,7 +23,7 @@ export default {
         await this.$store
           .dispatch("authModule/googleLogin", payloadData)
           .then(() => {
-            this.$router.push("program-dashboard");
+            this.$router.push("/assets-explorer");
           });
       } catch (error) {
         console.error(error);

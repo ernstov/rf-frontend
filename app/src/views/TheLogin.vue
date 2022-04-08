@@ -98,7 +98,7 @@ export default {
         };
         this.isLoading = true;
         await this.$store.dispatch("authModule/login", payloadData);
-        this.$router.push("/program-dashboard");
+        this.$router.push("/assets-explorer");
         this.isLoading = false;
       } catch (error) {
         this.isLoading = false;

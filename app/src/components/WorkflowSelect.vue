@@ -3,7 +3,7 @@
     searchable
     clearable
     name="workflows"
-    multiple
+    :multiple="!single"
     label="name"
     class="search-select"
     close-on-select
@@ -25,6 +25,10 @@ export default {
     value: {
       type: Array,
       default: () => [],
+    },
+    single: {
+      type: Boolean,
+      default: false,
     },
   },
   setup(props) {
