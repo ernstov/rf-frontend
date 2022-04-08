@@ -7,15 +7,22 @@
 
 <script>
 import TheNavbar from "@/components/layout/TheNavbar.vue";
+import TokenService from "./services/storage.service";
 export default {
   components: {
     TheNavbar,
+  },
+  async mounted() {
+    if (TokenService.getToken()) {
+      await this.$store.dispatch("authModule/refreshUser");
+    }
   },
   data() {
     return {
       showNavbar: true,
     };
   },
+  computed: {},
   watch: {
     $route() {
       this.showNavbar = this.$route.meta.requiresAuth;

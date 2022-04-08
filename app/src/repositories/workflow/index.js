@@ -1,5 +1,4 @@
-import ApiService from '../../services/api.service'
-
+import ApiService from '../../services/api'
 export const WorkflowRepository = {
 	async search(query) {
 		return await ApiService.get(`/workflow/?search=${query}`)

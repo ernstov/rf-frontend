@@ -129,8 +129,10 @@ export default {
         this.loading = true;
         const { data } = await WorkflowRepository.getPrograms();
         this.programs = data;
+        this.loading = false;
       } catch (error) {
         this.toast.error("Unable to fetch programs");
+        this.loading = false;
       }
     },
   },

@@ -1,8 +1,8 @@
 import { createApp } from 'vue'
 import App from '@/App.vue'
+import setupInterceptors from './services/interceptor.service'
 import '@/index.css'
 import router from '@/router.js'
-import ApiService from './services/api.service.js'
 import store from './store'
 import gAuthPlugin from 'vue3-google-oauth2'
 import vSelect from 'vue-select'
@@ -15,7 +15,7 @@ const gauthClientId = process.env.VUE_APP_GOOGLE_CLIENT_ID
 
 //Set the base URL of the API
 
-ApiService.init(process.env.VUE_APP_ROOT_API)
+setupInterceptors(store)
 
 app.component('v-select', vSelect)
 app.use(Toast, {

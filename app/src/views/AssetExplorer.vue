@@ -7,6 +7,12 @@
         <base-dropdown></base-dropdown>
       </div>
       <AssetTable :assets="assets" />
+      <p
+        v-if="!assets.length && !loading"
+        class="bg-white text-center text-2xl pt-4 text-gray-500"
+      >
+        No assets found on the server
+      </p>
       <div
         class="
           flex
@@ -20,6 +26,7 @@
         "
       >
         <Paginator
+          v-if="assets.length"
           :current-page="query.page"
           :total-pages="totalPages"
           :total="count"
@@ -112,6 +119,7 @@ export default {
     return {
       shoeEditAssetModal: false,
       showBulkUploadModal: false,
+      loading: true,
     };
   },
   methods: {
@@ -124,13 +132,16 @@ export default {
 
     async refreshAssets() {
       try {
+        this.loading = true;
         const { data } = await AssetRepository.find(this.query);
         this.assets = data?.results || [];
         this.totalPages = Math.ceil(
           data.count / parseInt(this.query.page_size)
         );
         this.count = data.count;
+        this.loading = false;
       } catch (error) {
+        this.loading = false;
         console.log(error);
         this.toast.error("Unable to fetch assets");
       }

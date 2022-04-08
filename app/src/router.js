@@ -9,11 +9,20 @@ import TheProgram from '@/components/TheProgram.vue'
 import TheProject from '@/components/TheProject.vue'
 import AddNewAssets from '@/components/AddNewAssets.vue'
 import EditAssetView from '@/views/EditAssetView.vue'
+import Home from '@/views/HomeView.vue'
 import store from '@/store/index.js'
 
 const router = createRouter({
 	history: createWebHistory(),
 	routes: [
+		{
+			path: '/',
+			component: Home,
+			name: 'Home',
+			meta: {
+				requiresAuth: true,
+			},
+		},
 		{
 			path: '/login',
 			component: TheLogin,

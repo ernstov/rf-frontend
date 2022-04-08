@@ -14,6 +14,15 @@ const StorageService = {
 	getToken() {
 		return localStorage.getItem('access')
 	},
+	setToken(token) {
+		localStorage.setItem('access', token)
+	},
+	setRefreshToken(token) {
+		localStorage.setItem('refresh', token)
+	},
+	getRefreshToken() {
+		return localStorage.getItem('refresh')
+	},
 }
 
 export default StorageService

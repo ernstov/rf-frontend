@@ -11,7 +11,8 @@
     v-model="selected"
     :options="options"
     @onUpdate="$emit('input', selected)"
-    @search="onInventorSearch"
+    @search="onSearch"
+    v-on:open="onSearch"
   />
 </template>
 
@@ -41,11 +42,14 @@ export default {
   },
 
   methods: {
-    async onInventorSearch(q, loading) {
+    async onSearch(q, loading) {
+      if (!loading) {
+        loading = () => {};
+      }
       try {
         this.options = [];
         loading(true);
-        const { data: result } = await InventorRepository.search(q);
+        const { data: result } = await InventorRepository.search(q || "");
         loading(false);
         if (result && result.length) {
           this.options = result;

@@ -12,6 +12,7 @@
     :options="options"
     v-on:update:modelValue="onUpdate"
     @search="onSearch"
+    v-on:open="onSearch"
   />
 </template>
 
@@ -34,10 +35,13 @@ export default {
 
   methods: {
     async onSearch(q, loading) {
+      if (!loading) {
+        loading = () => {};
+      }
       try {
         this.options = [];
         loading(true);
-        const { data: result } = await TechnologyRepository.search(q);
+        const { data: result } = await TechnologyRepository.search(q || "");
         loading(false);
         if (result && result.length) {
           this.options = result;

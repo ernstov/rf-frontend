@@ -1,8 +1,8 @@
 export default {
-  setUser(state, email) {
-    state.user = email;
-  },
-  logoutUser(state) {
-    state.user = null;
-  },
-};
+	setUser(state, payload) {
+		state.user = payload
+	},
+	logoutUser(state) {
+		state.user = null
+	},
+}
