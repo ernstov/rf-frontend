@@ -31,9 +31,12 @@ const setup = (store) => {
 				if (err.response.status === 401 && !originalConfig._retry) {
 					originalConfig._retry = true
 
+					const refreshToken = TokenService.getRefreshToken()
+					if (!refreshToken) return
+
 					try {
 						const { data } = await axiosInstance.post('/auth/jwt/refresh', {
-							refresh: TokenService.getRefreshToken(),
+							refresh: refreshToken,
 						})
 						const accessToken = data.access
 						TokenService.setToken(accessToken)

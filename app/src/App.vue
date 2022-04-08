@@ -12,9 +12,9 @@ export default {
   components: {
     TheNavbar,
   },
-  mounted() {
+  async mounted() {
     if (TokenService.getToken()) {
-      this.$store.dispatch("authModule/refreshUser");
+      await this.$store.dispatch("authModule/refreshUser");
     }
   },
   data() {
