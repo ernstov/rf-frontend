@@ -23,7 +23,7 @@ export default {
         await this.$store
           .dispatch("authModule/googleLogin", payloadData)
           .then(() => {
-            this.$router.push("/assets-explorer");
+            this.$router.push("/");
           });
       } catch (error) {
         console.error(error);
@@ -37,7 +37,7 @@ export default {
 <style lang="scss" scoped>
 .google-btn {
   background-color: transparent !important;
-  border: 0.19rem solid rgba(104, 104, 104, 0.26);
+  border: 0.19rem solid rgba(104, 104, 104, 0.097);
   display: flex;
   align-items: center;
   justify-content: center;

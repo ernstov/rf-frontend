@@ -2,12 +2,12 @@
   <div>
     <div class="px-60 py-32">
       <div class="flex items-center">
-        <div class="w-1/3 mr-8">
-          <p>Select By Workflow</p>
+        <div class="w-3/12 mr-8">
+          <p class="text-xl mb-1">Select By Workflow</p>
           <WorkflowSelect class="" single v-model="workflow" />
         </div>
-        <div class="w-1/3">
-          <p>Select By Status</p>
+        <div class="w-3/12">
+          <p class="text-xl mb-1">Select By Status</p>
           <StatusSelect v-model="status" />
         </div>
         <BaseButton
@@ -15,6 +15,11 @@
           @click="paginateNext(1)"
           :loading="loading"
           >Apply</BaseButton
+        >
+        <BaseButton
+          class="border border-red-500 text-red-500 w-60 ml-12 self-end py-7"
+          @click="clearFilters"
+          >Clear</BaseButton
         >
       </div>
       <AssetTable :assets="assets" />
@@ -140,6 +145,11 @@ export default {
     };
   },
   methods: {
+    clearFilters() {
+      this.status = null;
+      this.workflow = null;
+      this.paginateNext(1);
+    },
     paginateNext(val) {
       this.workflow
         ? (this.query.workflow = this.workflow)
@@ -149,7 +159,7 @@ export default {
         : delete this.query.status;
 
       this.$router.push({
-        path: "/assets-explorer",
+        path: "/",
         query: { ...this.query, page: val },
       });
     },

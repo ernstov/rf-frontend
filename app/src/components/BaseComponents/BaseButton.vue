@@ -4,7 +4,7 @@
     class="
       py-4
       rounded-md
-      text-3xl
+      text-2xl
       font-medium
       transition
       duration-300

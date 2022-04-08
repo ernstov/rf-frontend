@@ -1,11 +1,31 @@
 <template>
   <div id="edit-asset">
     <div class="px-60 py-32 bg-transparent h-full">
+      <div class="flex items-center mb-3 bg-white p-6 rounded-lg">
+        <div class="mr-8 cursor-pointer bg-gray-100 rounded-full w-16 h-16 p-3">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            class="w-full w-full text-gray-500"
+            @click="$router.go(-1)"
+            viewBox="0 0 20 20"
+            fill="currentColor"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </div>
+        <h2 class="text-4xl text-gray-500">
+          <span class="text-green-600 font-medium">{{ asset?.family_id }}</span>
+        </h2>
+      </div>
       <form @submit.prevent="onSubmit" v-if="asset">
         <div class="bg-white p-14 rounded-md">
           <h2 class="text-6xl mb-12">Update Asset</h2>
-          <p class="text-xl mb-2">Family ID</p>
-          <h4 class="text-3xl mb-5">{{ asset.family_id }}</h4>
+          <p class="text-xl mb-2">title</p>
+          <h4 class="text-2xl mb-5">{{ asset.title }}</h4>
 
           <div class="grid grid-cols-2 gap-14 mt-14">
             <div>
@@ -40,7 +60,7 @@
                 duration-300
                 w-80
               "
-              @click.prevent="$router.push(`/assets-explorer`)"
+              @click.prevent="$router.push(`/`)"
             >
               Cancel
             </button>
@@ -108,7 +128,7 @@ export default {
       try {
         await AssetRepository.update(this.assetId, payload);
         this.toast.success("Asset Updated");
-        this.$router.push("/assets-explorer");
+        this.$router.push("/");
       } catch (error) {
         this.loading = false;
         console.log(error);

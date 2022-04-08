@@ -94,6 +94,23 @@
             <div class="flex">
               <div class="px-2 pt-2 pb-3 space-y-1">
                 <router-link
+                  to="/"
+                  class="
+                    text-white
+                    block
+                    px-3
+                    py-2
+                    rounded-md
+                    text-base
+                    font-medium
+                    text-2xl
+                  "
+                  aria-current="page"
+                  >Asset Explorer</router-link
+                >
+              </div>
+              <div class="px-2 pt-2 pb-3 space-y-1">
+                <router-link
                   to="/program-dashboard"
                   class="
                     text-white
@@ -125,23 +142,6 @@
                   aria-current="page"
                 >
                   Projects</router-link
-                >
-              </div>
-              <div class="px-2 pt-2 pb-3 space-y-1">
-                <router-link
-                  to="/assets-explorer"
-                  class="
-                    text-white
-                    block
-                    px-3
-                    py-2
-                    rounded-md
-                    text-base
-                    font-medium
-                    text-2xl
-                  "
-                  aria-current="page"
-                  >Asset Explorer</router-link
                 >
               </div>
             </div>
@@ -290,6 +290,23 @@
             text-3xl
           "
           aria-current="page"
+          >Asset Explorer</router-link
+        >
+      </div>
+      <div class="px-2 pt-2 pb-3 space-y-1">
+        <router-link
+          to="/"
+          class="
+            text-center text-white
+            block
+            px-3
+            py-2
+            rounded-md
+            text-base
+            font-medium
+            text-3xl
+          "
+          aria-current="page"
           >Programs
         </router-link>
       </div>
@@ -309,23 +326,6 @@
           aria-current="page"
         >
           Projects</router-link
-        >
-      </div>
-      <div class="px-2 pt-2 pb-3 space-y-1">
-        <router-link
-          to="/"
-          class="
-            text-center text-white
-            block
-            px-3
-            py-2
-            rounded-md
-            text-base
-            font-medium
-            text-3xl
-          "
-          aria-current="page"
-          >Asset Explorer</router-link
         >
       </div>
     </div>

@@ -1,30 +1,32 @@
 <template>
   <div class="login flex justify-center items-center">
     <div class="form">
-      <h1>Login</h1>
+      <h1 class="mb-2">Please login to contine</h1>
       <p v-if="errorMessage" class="error">{{ this.errorMessage }}</p>
-      <input
-        class="mb-8"
-        type="email"
-        placeholder="Email"
-        v-model="email"
-        required
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        v-model="password"
-        required
-      />
-      <button class="forgot-btn" @click.prevent="forgotPassword">
-        Forgot Password?
-      </button>
-      <button class="login-btn" @click="login">Login</button>
+      <div class="hidden">
+        <input
+          class="mb-8"
+          type="email"
+          placeholder="Email"
+          v-model="email"
+          required
+        />
+        <input
+          type="password"
+          placeholder="Password"
+          v-model="password"
+          required
+        />
+        <button class="forgot-btn" @click.prevent="forgotPassword">
+          Forgot Password?
+        </button>
+        <button class="login-btn" @click="login">Login</button>
+      </div>
       <google-sign-in
         class="login-btn"
         @showLoading="setLoading"
       ></google-sign-in>
-      <p>
+      <p class="hidden">
         Don’t have account ? <router-link to="/register">Sign up</router-link>
       </p>
     </div>
@@ -98,7 +100,7 @@ export default {
         };
         this.isLoading = true;
         await this.$store.dispatch("authModule/login", payloadData);
-        this.$router.push("/assets-explorer");
+        this.$router.push("/");
         this.isLoading = false;
       } catch (error) {
         this.isLoading = false;
@@ -133,7 +135,6 @@ export default {
       font-family: $font-secondary;
       font-weight: bold;
       text-align: center;
-      margin-bottom: 6rem;
     }
     .error {
       color: red;
