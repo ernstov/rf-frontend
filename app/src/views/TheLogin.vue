@@ -96,19 +96,15 @@ export default {
           email: this.email,
           password: this.password,
         };
-        await this.$store
-          .dispatch("authModule/login", payloadData)
-          .then(() => {
-            this.$router.push("program-dashboard");
-          })
-          .catch((error) => {
-            if (error.response.status === 401) {
-              this.errorMessage = error.response.data.detail;
-            }
-          });
+        this.isLoading = true;
+        await this.$store.dispatch("authModule/login", payloadData);
+        this.$router.push("/program-dashboard");
+        this.isLoading = false;
       } catch (error) {
-        console.log("Try Catch");
-        return error;
+        this.isLoading = false;
+        if (error?.response?.status === 401) {
+          this.errorMessage = error?.response?.data?.detail;
+        }
       }
     },
     forgotPassword() {

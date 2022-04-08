@@ -1,3 +1,4 @@
 export default {
-  isAuthenticated: (state) => !!state.user,
-};
+	isAuthenticated: (state) => !!state.user,
+	getUser: (state) => state.user,
+}

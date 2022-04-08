@@ -1,4 +1,4 @@
-import ApiService from '../../services/api.service'
+import ApiService from '../../services/api'
 
 export const AssetRepository = {
 	async create(payload) {
@@ -6,7 +6,6 @@ export const AssetRepository = {
 	},
 
 	async find(query) {
-		console.log(query)
 		return await ApiService.get('asset/', { params: query || {} })
 	},
 

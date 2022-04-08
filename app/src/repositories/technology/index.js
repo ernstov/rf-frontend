@@ -1,7 +1,6 @@
-import ApiService from '../../services/api.service'
-
+import api from '../../services/api'
 export const TechnologyRepository = {
 	async search(query) {
-		return await ApiService.get(`/technology/?search=${query}`)
+		return await api.get(`/technology/?search=${query}`)
 	},
 }
