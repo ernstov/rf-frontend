@@ -45,7 +45,9 @@
         "
       >
         <div class="header flex justify-between">
-          <h2 class="text-5xl mb-8">Edit Program</h2>
+          <h4 class="text-2xl mb-8 text-center flex-grow">
+            Are you sure want to delete the program?
+          </h4>
           <span class="icon cursor-pointer" @click="$emit('close-modal')">
             <svg
               version="1.1"
@@ -71,52 +73,20 @@
           </span>
         </div>
         <div class="bg-white">
-          <form @submit.prevent="onSubmit">
-            <p class="text-3xl mb-5">Name</p>
-            <input
-              class="
-                placeholder-gray-500 placeholder-opacity-50
-                w-full
-                h-16
-                text-2xl
-                px-5
-                border border-gray-300
-                rounded-md
-                outline-none
-                focus:outline-none
-              "
-              required
-              v-model="form.name"
-            />
-            <p class="text-3xl mb-5 mt-14">Description</p>
-            <textarea
-              name=""
-              id=""
-              cols="30"
-              rows="10"
-              class="
-                placeholder-gray-500 placeholder-opacity-50
-                w-full
-                h-60
-                text-2xl
-                px-5
-                py-5
-                border border-gray-300
-                rounded-md
-                outline-none
-                focus:outline-none
-              "
-              required
-              v-model="form.description"
-            ></textarea>
+          <form @submit.prevent="onSubmit" class="mb-4">
+            <p class="text-xl mb-1">Name</p>
+            <p class="text-3xl font-semibold">{{ value.name }}</p>
+            <p class="text-xl mb-1 mt-6">Description</p>
+            <p class="text-3xl">{{ value.description }}</p>
           </form>
-          <div class="flex items-center justify-end">
+
+          <div class="flex items-center justify-end mt-12">
             <BaseButton
-              :loading="loading"
-              class="bg-green-600 w-80 py-8 mt-8"
-              @click="onSubmit"
+              :loading="deleteLoading"
+              @click="deleteProgram"
+              class="bg-red-700 w-80 py-8 mt-8 mr-8"
             >
-              Submit
+              Delete
             </BaseButton>
           </div>
         </div>
@@ -125,7 +95,6 @@
   </div>
 </template>
 <script>
-import { programCreateSchema } from "../../utils";
 import { useToast } from "vue-toastification";
 import { WorkflowRepository } from "../../repositories";
 import BaseButton from "../BaseComponents/BaseButton.vue";
@@ -151,7 +120,6 @@ export default {
         description: "",
         type: "program",
       },
-      loading: false,
       deleteLoading: false,
       deleteConfirm: false,
     };
@@ -161,21 +129,15 @@ export default {
     this.form = { name, description, type };
   },
   methods: {
-    async onSubmit() {
+    async deleteProgram() {
       try {
-        await programCreateSchema.validate(this.form);
-      } catch (error) {
-        this.toast.error(error.message);
-        return;
-      }
-      try {
-        this.loading = true;
-        await WorkflowRepository.update(this.value.id, this.form);
-        this.loading = false;
-        this.toast.success("Program Updated");
+        this.deleteLoading = true;
+        await WorkflowRepository.delete(this.value.id);
+        this.deleteLoading = false;
+        this.toast.success("Program Deleted");
         this.$emit("close-modal");
       } catch (error) {
-        this.loading = false;
+        this.deleteLoading = false;
         console.log(error);
       }
     },

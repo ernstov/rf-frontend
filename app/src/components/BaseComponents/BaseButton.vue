@@ -59,6 +59,7 @@ export default {
 </script>
 <style lang="scss" scoped>
 #u-button {
+  position: relative;
   .up-enter-active,
   .up-leave-active {
     transition: all 0.3s;

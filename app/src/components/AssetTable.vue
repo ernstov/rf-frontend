@@ -3,11 +3,11 @@
     <div
       class="flex flex-col mt-8 bg-white sm:rounded-lg w-full overflow-hidden"
     >
-      <div class="overflow-x-auto px-4 max-w-full">
-        <div class="inline-block min-w-full sm:px-6 lg:px-8">
-          <div class="overflow-hidden rounded-t-2xl">
-            <table class="min-w-full px-2 table-fixed">
-              <thead class="bg-gray-50 dark:bg-gray-700">
+      <div class="overflow-x-auto max-w-full">
+        <div class="inline-block min-w-full">
+          <div class="overflow-hidden">
+            <table class="min-w-full table-fixed">
+              <thead class="bg-gray-100 dark:bg-gray-700">
                 <tr>
                   <th
                     scope="col"
@@ -77,7 +77,7 @@
                       text-2xl
                       font-medium
                       tracking-wider
-                      text-left text-gray-700
+                      text-center text-gray-700
                       uppercase
                       dark:text-gray-400
                     "
@@ -139,11 +139,8 @@
                   </td>
                   <td class="py-5 px-6 text-2xl text-gray-500 h-2">
                     <p
-                      class="dark:text-gray-400 p-3 w-40"
-                      :class="{
-                        'bg-yellow-300': family?.status?.name == 'On Hold',
-                        'bg-green-400': family?.status?.name == 'In Progress',
-                      }"
+                      class="p-3 w-40 rounded-lg text-center"
+                      :class="family.status.name.toLowerCase()"
                     >
                       {{ family.status.name }}
                     </p>
@@ -156,13 +153,15 @@
                   <td class="py-5 px-6 text-2xl font-medium text-right">
                     <router-link
                       class="
-                        text-black-600
+                        text-blue-600
                         dark:text-black-500
                         hover:underline
                         dark:text-white-400
                         hover:no-underline
-                        bg-gray-300
-                        p-3
+                        px-6
+                        py-1
+                        border border-blue-500
+                        rounded-full
                       "
                       :to="`/assets-explorer/edit/${family.uuid}`"
                       >Edit</router-link
@@ -171,13 +170,15 @@
                   <td class="py-5 px-6 text-2xl font-medium text-right pr-10">
                     <router-link
                       class="
-                        text-black-600
+                        text-green-600
                         dark:text-black-500
                         hover:underline
                         dark:text-white-400
                         hover:no-underline
-                        bg-gray-300
-                        p-3
+                        py-1
+                        px-6
+                        border border-green-500
+                        rounded-full
                       "
                       :to="`/assets-view/${family.uuid}`"
                       >View</router-link
@@ -214,12 +215,28 @@ export default {
         min-width: 100px;
         word-break: break-all;
         white-space: pre-line;
-        padding: 8px;
-      }
-      th {
-        padding-left: 8px;
+        padding: 8px 12px;
       }
     }
+  }
+  .granted {
+    background: rgb(177, 255, 177);
+  }
+  .pending {
+    background: rgb(255, 255, 216);
+  }
+  .expired {
+    background: rgb(255, 237, 202);
+  }
+
+  .inactive {
+    background: rgb(225, 225, 225);
+    color: rgb(31, 31, 31);
+  }
+
+  .rejected {
+    background: rgb(250, 138, 138);
+    color: white;
   }
 }
 </style>

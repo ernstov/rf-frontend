@@ -1,10 +1,21 @@
 <template>
   <div>
     <div class="px-60 py-32">
-      <div class="flex">
-        <base-dropdown></base-dropdown>
-        <base-dropdown></base-dropdown>
-        <base-dropdown></base-dropdown>
+      <div class="flex items-center">
+        <div class="w-1/3 mr-8">
+          <p>Select By Workflow</p>
+          <WorkflowSelect class="" single v-model="workflow" />
+        </div>
+        <div class="w-1/3">
+          <p>Select By Status</p>
+          <StatusSelect v-model="status" />
+        </div>
+        <BaseButton
+          class="bg-green-600 w-80 py-7 self-end ml-16"
+          @click="paginateNext(1)"
+          :loading="loading"
+          >Apply</BaseButton
+        >
       </div>
       <AssetTable :assets="assets" />
       <p
@@ -54,7 +65,6 @@
   </div>
 </template>
 <script>
-import BaseDropdown from "@/components/BaseComponents/BaseDropdown.vue";
 import BulkUploadModal from "@/components/Modals/BulkUploadModal.vue";
 import EditAssetModal from "@/components/Modals/EditAssetModal.vue";
 import AssetTable from "@/components/AssetTable.vue";
@@ -63,22 +73,28 @@ import { useRoute, useRouter } from "vue-router";
 import { ref } from "@vue/runtime-core";
 import { AssetRepository } from "../repositories/asset";
 import { useToast } from "vue-toastification";
+import WorkflowSelect from "../components/WorkflowSelect.vue";
+import StatusSelect from "../components/StatusSelect.vue";
+import BaseButton from "../components/BaseComponents/BaseButton.vue";
 const PAGE_SIZE = 10;
 
 export default {
   components: {
-    BaseDropdown,
     BulkUploadModal,
     EditAssetModal,
     AssetTable,
     Paginator,
+    WorkflowSelect,
+    StatusSelect,
+    BaseButton,
   },
   beforeRouteUpdate(to, from, next) {
     if (to.query.page) {
-      this.query = {
-        page: parseInt(to.query.page),
-        page_size: parseInt(to.query.page_size),
-      };
+      for (const key in to.query) {
+        if (Object.hasOwnProperty.call(to.query, key)) {
+          this.query[key] = parseInt(to.query[key]);
+        }
+      }
     }
     this.refreshAssets();
     next();
@@ -94,11 +110,10 @@ export default {
       page_size: PAGE_SIZE,
     });
 
-    if (route.query.page) {
-      query.value = {
-        page: parseInt(route.query.page),
-        page_size: parseInt(route.query.page_size),
-      };
+    for (const key in route.query) {
+      if (Object.hasOwnProperty.call(route.query, key)) {
+        query.value[key] = route.query[key];
+      }
     }
 
     const toast = useToast();
@@ -120,10 +135,19 @@ export default {
       shoeEditAssetModal: false,
       showBulkUploadModal: false,
       loading: true,
+      workflow: null,
+      status: null,
     };
   },
   methods: {
     paginateNext(val) {
+      this.workflow
+        ? (this.query.workflow = this.workflow)
+        : delete this.query.workflow;
+      this.status
+        ? (this.query.status = this.status)
+        : delete this.query.status;
+
       this.$router.push({
         path: "/assets-explorer",
         query: { ...this.query, page: val },
