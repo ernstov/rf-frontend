@@ -11,6 +11,7 @@
     @onUpdate="$emit('input', selected)"
     :options="options"
     @search="onSearch"
+    v-on:open="onSearch"
   />
 </template>
 
@@ -41,10 +42,13 @@ export default {
 
   methods: {
     async onSearch(q, loading) {
+      if (!loading) {
+        loading = () => {};
+      }
       try {
         this.options = [];
         loading(true);
-        const { data: result } = await StatusRepository.search(q);
+        const { data: result } = await StatusRepository.search(q || "");
         loading(false);
         if (result && result.length) {
           this.options = result;

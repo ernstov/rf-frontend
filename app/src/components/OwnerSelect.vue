@@ -11,7 +11,8 @@
     v-model="selected"
     :options="options"
     @input="$emit('input', selected)"
-    @search="onOwnerSearch"
+    @search="onSearch"
+    v-on:open="onSearch"
   />
 </template>
 
@@ -29,7 +30,6 @@ export default {
   setup(props) {
     const options = ref([]);
     const selected = ref([]);
-
     onMounted(() => {
       selected.value = props.value;
     });
@@ -41,11 +41,14 @@ export default {
   },
 
   methods: {
-    async onOwnerSearch(q, loading) {
+    async onSearch(q, loading) {
+      if (!loading) {
+        loading = () => {};
+      }
       try {
         this.options = [];
         loading(true);
-        const { data: result } = await OwnerRepository.search(q);
+        const { data: result } = await OwnerRepository.search(q || "");
         loading(false);
         if (result && result.length) {
           this.options = result;

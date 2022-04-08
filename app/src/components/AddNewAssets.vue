@@ -25,81 +25,23 @@
           <div class="grid grid-cols-2 gap-14 mt-14">
             <div>
               <p class="text-3xl mb-5">Owners</p>
-              <v-select
-                searchable
-                name="owners"
-                clearable
-                class="search-select"
-                close-on-select
-                :options="ownerOptions"
-                @search="onOwnerSearch"
-                v-model="form.owners"
-                multiple
-                :reduce="(o) => o.id"
-                label="name"
-              />
+              <OwnerSelect v-model="form.owners" />
             </div>
             <div>
               <p class="text-3xl mb-5">Inventors</p>
-              <v-select
-                searchable
-                clearable
-                name="inventors"
-                multiple
-                label="name"
-                class="search-select"
-                close-on-select
-                :reduce="(i) => i.id"
-                v-model="form.inventors"
-                :options="inventorOptions"
-                @search="onInventorSearch"
-              />
+              <InventorSelect v-model="form.inventors" />
             </div>
             <div>
               <p class="text-3xl mb-5">Technology Types</p>
-              <v-select
-                searchable
-                clearable
-                multiple
-                label="name"
-                name="technology_types"
-                class="search-select"
-                close-on-select
-                :reduce="(i) => i.id"
-                v-model="form.technology_types"
-                :options="technologyOptions"
-                @search="onTechSearch"
-              />
+              <TechTypeSelect v-model="form.technology_types" />
             </div>
             <div>
               <p class="text-3xl mb-5">Status</p>
-              <v-select
-                searchable
-                clearable
-                name="status"
-                label="name"
-                class="search-select"
-                close-on-select
-                :reduce="(i) => i.id"
-                v-model="form.status"
-                :options="statusOptions"
-                @search="onStatusSearch"
-              />
+              <StatusSelect v-model="form.status" />
             </div>
             <div>
               <p class="text-3xl mb-5">Workflow</p>
-              <v-select
-                searchable
-                clearable
-                multiple
-                label="name"
-                class="search-select"
-                close-on-select
-                :reduce="(i) => i.id"
-                v-model="form.workflow"
-                :options="workflowOptions"
-                @search="onWorkflowSearch"
-              />
+              <WorkflowSelect v-model="form.workflow" />
             </div>
           </div>
 
@@ -292,19 +234,21 @@
 <script>
 import BaseButton from "@/components/BaseComponents/BaseButton.vue";
 import { useToast } from "vue-toastification";
-import {
-  InventorRepository,
-  OwnerRepository,
-  StatusRepository,
-  TechnologyRepository,
-  WorkflowRepository,
-} from "../repositories";
 import { AssetRepository } from "../repositories/asset";
 import { assetSchema } from "../utils";
+import OwnerSelect from "./OwnerSelect.vue";
+import TechTypeSelect from "./TechTypeSelect.vue";
+import StatusSelect from "./StatusSelect.vue";
+import WorkflowSelect from "./WorkflowSelect.vue";
+import InventorSelect from "./InventorSelect.vue";
 export default {
   components: {
     BaseButton,
-    // Modal,
+    OwnerSelect,
+    TechTypeSelect,
+    StatusSelect,
+    WorkflowSelect,
+    InventorSelect,
   },
   setup() {
     const toast = useToast();
@@ -341,80 +285,6 @@ export default {
   },
   mounted() {},
   methods: {
-    async onOwnerSearch(q, loading) {
-      try {
-        this.ownerOptions = [];
-        loading(true);
-        const { data: result } = await OwnerRepository.search(q);
-        loading(false);
-        if (result && result.length) {
-          this.ownerOptions = result;
-        }
-      } catch (error) {
-        console.log(error);
-        loading(false);
-      }
-    },
-    async onInventorSearch(q, loading) {
-      try {
-        this.inventorOptions = [];
-        loading(true);
-        const { data: result } = await InventorRepository.search(q);
-        loading(false);
-        if (result && result.length) {
-          this.inventorOptions = result;
-        }
-      } catch (error) {
-        loading(false);
-        console.log(error);
-      }
-    },
-
-    async onTechSearch(q, loading) {
-      try {
-        this.technologyOptions = [];
-        loading(true);
-        const { data: result } = await TechnologyRepository.search(q);
-        loading(false);
-        if (result && result.length) {
-          this.technologyOptions = result;
-        }
-      } catch (error) {
-        loading(false);
-        console.log(error);
-      }
-    },
-
-    async onStatusSearch(q, loading) {
-      try {
-        this.statusOptions = [];
-        loading(true);
-        const { data: result } = await StatusRepository.search(q);
-        loading(false);
-        if (result && result.length) {
-          this.statusOptions = result;
-        }
-      } catch (error) {
-        loading(false);
-        console.log(error);
-      }
-    },
-
-    async onWorkflowSearch(q, loading) {
-      try {
-        this.workflowOptions = [];
-        loading(true);
-        const { data: result } = await WorkflowRepository.search(q);
-        loading(false);
-        if (result && result.length) {
-          this.workflowOptions = result;
-        }
-      } catch (error) {
-        loading(false);
-        console.log(error);
-      }
-    },
-
     async onSubmit() {
       const payload = this.form;
       payload.patent_numbers = this.form?.patent_numbers?.split(",") || [];
