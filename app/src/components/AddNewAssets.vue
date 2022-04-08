@@ -221,7 +221,7 @@
                 duration-300
                 w-80
               "
-              @click.prevent="$router.push(`/assets-explorer`)"
+              @click.prevent="$router.push(`/`)"
             >
               Cancel
             </button>
@@ -304,7 +304,7 @@ export default {
         this.toast.success("Asset Created");
         this.loading = false;
 
-        this.$router.push("/assets-explorer");
+        this.$router.push("/");
       } catch (error) {
         this.loading = false;
 
