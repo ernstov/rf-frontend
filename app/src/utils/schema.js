@@ -28,3 +28,24 @@ export const programCreateSchema = yup.object().shape({
 	description: yup.string().required(),
 	type: yup.string().required(),
 })
+
+export const ownerCreateSchema = yup.object().shape({
+	name: yup.string().required(),
+	description: yup.string().required(),
+	owner_type: yup.string().required(),
+})
+
+export const createInventorSchema = yup.object().shape({
+	name: yup.string().required(),
+	description: yup.string().required(),
+})
+
+export const createTechnologyTypeSchema = yup.object().shape({
+	name: yup.string().required(),
+	description: yup.string().required(),
+})
+
+export const createStatusSchema = yup.object().shape({
+	name: yup.string().required(),
+	description: yup.string().required(),
+})
