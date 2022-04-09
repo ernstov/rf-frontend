@@ -1,28 +1,45 @@
 <template>
-  <v-select
-    searchable
-    clearable
-    name="workflows"
-    :multiple="!single"
-    label="name"
-    class="search-select"
-    close-on-select
-    :reduce="(i) => i.id"
-    v-model="selected"
-    :options="options"
-    @onUpdate="$emit('input', selected)"
-    @search="onSearch"
-    v-on:open="onSearch"
-  />
+  <div class="">
+    <div class="mb-2 text-2xl text-gray-500" v-if="q && !options.length">
+      Didn't find what you looking for?
+      <span
+        class="ml-4 text-green-600 cursor-pointer"
+        @click="modalState = true"
+        >Create new workflow</span
+      >
+    </div>
+
+    <v-select
+      searchable
+      clearable
+      name="workflows"
+      :multiple="!single"
+      label="name"
+      class="search-select"
+      close-on-select
+      :reduce="(i) => i.id"
+      :modelValue="modelValue"
+      :options="options"
+      ref="wrkflw"
+      v-on:update:modelValue="onUpdate"
+      @search="onSearch"
+      v-on:open="onSearch"
+    />
+    <AddNewWorkflowModal
+      v-if="modalState"
+      @close-modal="onDismiss"
+      :query="q"
+    />
+  </div>
 </template>
 
 <script>
 import { ref } from "@vue/reactivity";
 import { WorkflowRepository } from "../repositories";
-import { onMounted } from "@vue/runtime-core";
+import AddNewWorkflowModal from "./Modals/AddNewWorkflowModal.vue";
 export default {
   props: {
-    value: {
+    modelValue: {
       type: Array,
       default: () => [],
     },
@@ -31,39 +48,56 @@ export default {
       default: false,
     },
   },
-  setup(props) {
+  setup() {
     const options = ref([]);
-    const selected = ref([]);
-
-    onMounted(() => {
-      selected.value = props.value;
-    });
-
+    const debounce = ref(null);
+    const modalState = ref(false);
+    const q = ref("");
     return {
+      modalState,
       options,
-      selected,
+      debounce,
+      q,
     };
   },
-
   methods: {
+    onUpdate(v) {
+      this.$emit("update:modelValue", v);
+    },
     async onSearch(q, loading) {
-      if (!loading) {
-        loading = () => {};
-      }
-      try {
-        this.options = [];
-        loading(true);
-        const { data: result } = await WorkflowRepository.search(q || "");
-        loading(false);
-        if (result && result.length) {
-          this.options = result;
+      this.q = q;
+      clearTimeout(this.debounce);
+      this.debounce = setTimeout(async () => {
+        if (!loading) {
+          loading = () => {};
         }
-      } catch (error) {
-        loading(false);
-        console.log(error);
+        try {
+          loading(true);
+          const { data: result } = await WorkflowRepository.search(q || "");
+          loading(false);
+          this.options = result;
+        } catch (error) {
+          this.options = [];
+          loading(false);
+          console.log(error);
+        }
+      }, 400);
+    },
+
+    onDismiss(selectedWorkflow) {
+      this.$refs.wrkflw.search = "";
+      if (selectedWorkflow) {
+        this.options.push(selectedWorkflow);
+        this.$emit("update:modelValue", [
+          ...this.modelValue,
+          selectedWorkflow.id,
+        ]);
+        this.q = "";
       }
+      this.modalState = false;
     },
   },
+  components: { AddNewWorkflowModal },
 };
 </script>
 
