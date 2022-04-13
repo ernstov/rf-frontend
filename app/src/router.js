@@ -108,7 +108,7 @@ router.beforeEach((to, from, next) => {
 			(to.name === 'Login' || to.name === 'Register') &&
 			store.getters['authModule/isAuthenticated']
 		) {
-			next({ path: '/Program-dashboard' })
+			next({ path: '/' })
 		} else {
 			next()
 		}

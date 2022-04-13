@@ -155,7 +155,6 @@ export default {
       } catch (error) {
         this.loading = false;
         this.toast.error(error.message);
-        console.log(error);
       }
     },
   },

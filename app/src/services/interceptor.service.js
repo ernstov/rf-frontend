@@ -24,7 +24,9 @@ const setup = (store) => {
 			console.log(originalConfig.url)
 
 			if (
-				!['/auth/google/', '/auth/jwt/create/'].includes(originalConfig.url) &&
+				!['/auth/google/', '/auth/jwt/create/', '/auth/jwt/refresh'].includes(
+					originalConfig.url
+				) &&
 				err.response
 			) {
 				// Access Token was expired
@@ -38,17 +40,21 @@ const setup = (store) => {
 						const { data } = await axiosInstance.post('/auth/jwt/refresh', {
 							refresh: refreshToken,
 						})
+
 						const accessToken = data.access
 						TokenService.setToken(accessToken)
 						await store.dispatch('authModule/refreshUser', accessToken)
 						return axiosInstance(originalConfig)
 					} catch (_error) {
-						return Promise.reject(_error)
+							TokenService.removeTokens()
+							store.dispatch('authModule/logout')
+							return Promise.reject(err);
+						
 					}
 				}
-			}
 
-			return Promise.reject(err)
+				return Promise.reject(err)
+			}
 		}
 	)
 }

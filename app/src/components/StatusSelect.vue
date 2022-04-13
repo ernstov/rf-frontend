@@ -15,7 +15,6 @@
       class="search-select"
       ref="statusselect"
       :reduce="(i) => i.id"
-      :clearSearchOnBlur="false"
       :modelValue="modelValue"
       v-on:update:modelValue="onUpdate"
       :options="options"
