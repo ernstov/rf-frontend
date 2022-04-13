@@ -20,7 +20,7 @@ export const assetSchema = yup.object().shape({
 export const assetEditSchema = yup.object().shape({
 	status: yup.number().required(),
 	technology_types: yup.array().of(yup.number()).min(1).required(),
-	workflow: yup.array().of(yup.number()).min(1).optional(),
+	workflow: yup.array().of(yup.number()).optional(),
 })
 
 export const programCreateSchema = yup.object().shape({
