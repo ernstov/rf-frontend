@@ -23,6 +23,10 @@ const StorageService = {
 	getRefreshToken() {
 		return localStorage.getItem('refresh')
 	},
+	removeTokens(){
+		localStorage.removeItem('access')
+		localStorage.removeItem('refresh')
+	}
 }
 
 export default StorageService

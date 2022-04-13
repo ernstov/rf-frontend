@@ -287,7 +287,6 @@ export default {
   methods: {
     async onSubmit() {
       const payload = this.form;
-      payload.patent_numbers = this.form?.patent_numbers?.split(",") || [];
       try {
         await assetSchema.validate(payload);
       } catch (error) {
@@ -296,6 +295,7 @@ export default {
         this.toast.error(error.message);
         return;
       }
+      payload.patent_numbers = this.form?.patent_numbers?.split(",") || [];
 
       // save asset
       try {

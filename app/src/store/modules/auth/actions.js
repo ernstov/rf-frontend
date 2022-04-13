@@ -59,8 +59,7 @@ export default {
 		})
 	},
 	logout(context) {
-		StorageService.removeData('access')
-		StorageService.removeData('refresh')
+		StorageService.removeTokens();
 		context.commit('logoutUser')
 	},
 	async refreshUser(context) {

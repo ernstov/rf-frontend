@@ -12,10 +12,13 @@ export default {
   components: {
     TheNavbar,
   },
-  async mounted() {
-    if (TokenService.getToken()) {
+  async beforeMount(){
+ if (TokenService.getToken()) {
       await this.$store.dispatch("authModule/refreshUser");
     }
+  },
+  async mounted() {
+   
   },
   data() {
     return {
